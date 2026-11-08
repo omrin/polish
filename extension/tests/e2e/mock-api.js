@@ -8,6 +8,7 @@ const PAGE = fs.readFileSync(path.join(__dirname, "fixtures/page.html"));
 
 function start() {
   const requests = [];
+  const emails = [];
   const server = http.createServer((req, res) => {
     const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "POST, OPTIONS" };
     if (req.method === "OPTIONS") { res.writeHead(204, cors); return res.end(); }
@@ -16,18 +17,19 @@ function start() {
     req.on("data", (c) => (raw += c));
     req.on("end", () => {
       const body = JSON.parse(raw);
-      requests.push({ headers: req.headers, body });
       const send = (status, obj) => { res.writeHead(status, { ...cors, "content-type": "application/json" }); res.end(JSON.stringify(obj)); };
+      if (req.url.startsWith("/emails")) { emails.push(body); return send(200, { id: "email_1" }); }
+      requests.push({ headers: req.headers, body });
       if (req.headers["x-api-key"] === "bad-key")
         return send(401, { type: "error", error: { type: "authentication_error", message: "invalid x-api-key" } });
       const user = body.messages[0].content;
       const fixture = /[֐-׿]/.test(user) ? "response_he.json"
         : /exactly \d+ alternatives/.test(body.system) ? "response_rephrase.json" : "response_en.json";
       send(200, { id: "msg_test", type: "message", role: "assistant", model: body.model, stop_reason: "end_turn",
-        content: [{ type: "text", text: FIX(fixture) }] });
+        content: [{ type: "text", text: FIX(fixture) }], usage: { input_tokens: 600, output_tokens: 500 } });
     });
   });
-  return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve({ server, requests, port: server.address().port })));
+  return new Promise((resolve) => server.listen(0, "127.0.0.1", () => resolve({ server, requests, emails, port: server.address().port })));
 }
 
 module.exports = { start };

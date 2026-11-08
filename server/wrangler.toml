@@ -32,7 +32,7 @@ PADDLE_CLIENT_TOKEN = ""
 PADDLE_PRICE_SMALL = ""
 PADDLE_PRICE_PLUS = ""
 PADDLE_PRICE_PRO = ""
-EXTENSION_IDS = ""                       # comma-separated Chrome extension ids allowed to sign in
+EXTENSION_IDS = "ghcmmobadipaafjcogaihkckndjkahko"  # comma-separated Chrome extension ids allowed to sign in (this one = extension/manifest.json "key"; add the Web Store id when published)
 ADMIN_EMAILS = ""                        # comma-separated
 RESEND_FROM = "Polish <sign-in@polish.example.com>"
 MAX_DAILY_RAW_COST_USD = "50"            # pause the service if Anthropic spend passes this per day

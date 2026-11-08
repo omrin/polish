@@ -9,27 +9,55 @@
 <body>
   <main>
     <h1><img src="../icons/icon48.png" alt="" width="36" height="36"> Polish <span class="tagline">Make it shine.</span></h1>
-    <p class="warn"><strong>Privacy:</strong> text you check is sent to Anthropic's API (Claude) over HTTPS.
-      Don't use it on patient-identifiable or other confidential information unless your organization permits it.
-      Your API key is stored only in this browser profile.</p>
+    <p class="warn"><strong>Privacy:</strong> text you check is sent to the Polish service, which passes it to Claude (Anthropic) and doesn't store it.
+      Don't use it on patient-identifiable or other confidential information unless your organization permits it.</p>
 
-    <label>Anthropic API key
-      <span class="row"><input id="apiKey" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
-      <button type="button" id="toggleKey">Show</button></span>
-    </label>
+    <fieldset class="modes">
+      <legend>How Polish checks your text</legend>
+      <label class="check"><input type="radio" name="authMode" id="mode-account" value="account"> Polish account <span class="tag">recommended</span></label>
+      <label class="check"><input type="radio" name="authMode" id="mode-key" value="api_key"> My own Anthropic API key <span class="tag">advanced</span></label>
+    </fieldset>
 
-    <label>Model
-      <input id="model" list="models" spellcheck="false">
-    </label>
-    <label>Fast-mode model
-      <input id="fastModel" list="models" spellcheck="false">
-    </label>
-    <datalist id="models">
-      <option value="claude-opus-5-5">
-      <option value="claude-sonnet-5-5">
-      <option value="claude-haiku-5-5">
-    </datalist>
-    <label class="check"><input id="useFastModel" type="checkbox"> Use fast mode (cheaper, quicker)</label>
+    <section id="account-section" class="panel">
+      <div id="signed-out">
+        <p>Sign in to start. New accounts get free credits to try Polish.</p>
+        <div class="actions"><button id="signin" class="primary">Sign in to Polish</button></div>
+      </div>
+      <div id="signed-in" hidden>
+        <p class="who">Signed in as <b id="acct-email"></b></p>
+        <p class="bal" id="acct-balance"></p>
+        <div class="actions">
+          <button id="buy" class="primary">Buy credits</button>
+          <button id="refresh">Refresh balance</button>
+          <button id="signout">Sign out</button>
+        </div>
+      </div>
+      <label class="check"><input id="useFastModelAcct" type="checkbox"> Fast mode (1 credit per check, quicker)</label>
+    </section>
+
+    <section id="key-section" class="panel" hidden>
+      <label>Anthropic API key
+        <span class="row"><input id="apiKey" type="password" placeholder="sk-ant-…" autocomplete="off" spellcheck="false">
+        <button type="button" id="toggleKey">Show</button></span>
+      </label>
+
+      <label>Model
+        <input id="model" list="models" spellcheck="false">
+      </label>
+      <label>Fast-mode model
+        <input id="fastModel" list="models" spellcheck="false">
+      </label>
+      <datalist id="models">
+        <option value="claude-opus-5-5">
+        <option value="claude-sonnet-5-5">
+        <option value="claude-haiku-5-5">
+      </datalist>
+      <label class="check"><input id="useFastModel" type="checkbox"> Use fast mode (cheaper, quicker)</label>
+      <label>Max characters per check
+        <input id="maxChars" type="number" min="100" max="100000" step="100">
+      </label>
+      <label class="check"><input id="refusalFallback" type="checkbox"> If Claude declines a request, retry on a fallback model (server-side)</label>
+    </section>
 
     <fieldset>
       <legend>Rephrasing styles</legend>
@@ -43,14 +71,10 @@
         <option value="he">Hebrew</option>
       </select>
     </label>
-    <label>Max characters per check
-      <input id="maxChars" type="number" min="100" max="100000" step="100">
-    </label>
-    <label class="check"><input id="refusalFallback" type="checkbox"> If Claude declines a request, retry on a fallback model (server-side)</label>
 
     <div class="actions">
       <button id="save" class="primary">Save</button>
-      <button id="test">Test key</button>
+      <button id="test">Test</button>
       <span id="status" role="status"></span>
     </div>
 
@@ -65,6 +89,7 @@
   </main>
   <script src="shared.js"></script>
   <script src="api.js"></script>
+  <script src="account.js"></script>
   <script src="options.js"></script>
 </body>
 </html>

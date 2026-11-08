@@ -1,6 +1,11 @@
-importScripts("shared.js", "api.js");
+importScripts("shared.js", "api.js", "account.js");
 
 const { analyze, DEFAULT_SETTINGS } = globalThis.WA_API;
+const ACC = globalThis.WA_ACCOUNT;
+const ALL_DEFAULTS = Object.assign({}, DEFAULT_SETTINGS, ACC.DEFAULT_ACCOUNT);
+
+const store = { set: (o) => chrome.storage.local.set(o) };
+const deps = () => ({ identity: chrome.identity, store, fetchImpl: (...a) => fetch(...a) });
 
 chrome.runtime.onInstalled.addListener((details) => {
   chrome.contextMenus.removeAll(() => {
@@ -8,7 +13,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     chrome.contextMenus.create({ id: "wa-rephrase", title: "Rephrase…", contexts: ["editable"] });
   });
   if (details.reason === "install") {
-    chrome.storage.local.get("apiKey").then(({ apiKey }) => { if (!apiKey) chrome.runtime.openOptionsPage(); });
+    getSettings().then((s) => { if (!s.refreshToken && !s.apiKey) chrome.runtime.openOptionsPage(); });
   }
 });
 
@@ -31,26 +36,48 @@ chrome.commands.onCommand.addListener((command, tab) => {
 chrome.action.onClicked.addListener(() => chrome.runtime.openOptionsPage());
 
 async function getSettings() {
-  const stored = await chrome.storage.local.get(Object.keys(DEFAULT_SETTINGS));
-  return Object.assign({}, DEFAULT_SETTINGS, stored);
+  const stored = await chrome.storage.local.get(Object.keys(ALL_DEFAULTS));
+  // People who set up an API key before accounts existed keep using it.
+  if (!("authMode" in stored) && stored.apiKey) stored.authMode = "api_key";
+  return Object.assign({}, ALL_DEFAULTS, stored);
+}
+
+const asError = (e) => ({ code: e.code || "error", message: e.message, buyUrl: e.buyUrl });
+
+function handle(fn, sendResponse) {
+  fn().then((r) => sendResponse(r), (e) => {
+    console.warn("[Polish]", e && e.code, e && e.message);
+    sendResponse({ error: asError(e) });
+  });
+  return true; // async response
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg && msg.type === "WA_ANALYZE") {
-    (async () => {
-      try {
-        const settings = await getSettings();
-        const result = await analyze(msg.text, msg.mode, settings);
-        sendResponse({ result });
-      } catch (e) {
-        console.warn("[Polish]", e);
-        sendResponse({ error: { code: e.code || "error", message: e.message } });
-      }
-    })();
-    return true; // async response
+  if (!msg || sender.id !== chrome.runtime.id) return false;
+  switch (msg.type) {
+    case "WA_ANALYZE":
+      return handle(async () => {
+        const s = await getSettings();
+        const result = s.authMode === "api_key"
+          ? await analyze(msg.text, msg.mode, s)
+          : await ACC.analyzeViaServer(msg.text, msg.mode, s, deps());
+        return { result };
+      }, sendResponse);
+    case "WA_SIGN_IN":
+      return handle(async () => ({ ok: true, account: await ACC.signIn(await getSettings(), deps()) }), sendResponse);
+    case "WA_SIGN_OUT":
+      return handle(async () => { await ACC.signOut(await getSettings(), deps()); return { ok: true }; }, sendResponse);
+    case "WA_GET_ACCOUNT":
+      return handle(async () => ({ account: await ACC.fetchAccount(await getSettings(), deps()) }), sendResponse);
+    case "WA_OPEN_URL": {
+      const url = String(msg.url || "");
+      if (/^https?:\/\//.test(url)) chrome.tabs.create({ url });
+      return false;
+    }
+    case "WA_OPEN_OPTIONS":
+      chrome.runtime.openOptionsPage();
+      return false;
+    default:
+      return false;
   }
-  if (msg && msg.type === "WA_OPEN_OPTIONS") {
-    chrome.runtime.openOptionsPage();
-  }
-  return false;
 });

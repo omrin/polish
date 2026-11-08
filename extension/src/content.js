@@ -180,8 +180,10 @@
     if (!c.isOpen()) return; // user closed it while waiting
     if (!resp || resp.error) {
       const err = (resp && resp.error) || { message: "Something went wrong." };
-      return c.showError(err.message, err.code);
+      c.onRetry = () => run(mode);
+      return c.showError(err.message, err.code, err);
     }
+    c.onRetry = null;
     c.onApply = (text) => applyText(target, text);
     c.showResult(resp.result, target.text, mode);
   }

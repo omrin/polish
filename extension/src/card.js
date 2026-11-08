@@ -99,14 +99,29 @@
         `<div><span class="spin"></span>Polishing…</div>`);
     }
 
-    showError(message, code) {
-      const footer = code === "no_api_key"
-        ? `<button class="b p" data-act="options">Open Options</button>` : `<button class="b" data-act="close">Close</button>`;
-      this._frame("Polish", "", `<div class="err">${esc(message)}</div>`, footer);
-      const opt = this.el.querySelector('[data-act="options"]');
-      if (opt) opt.addEventListener("click", () => { chrome.runtime.sendMessage({ type: "WA_OPEN_OPTIONS" }); this.close(); });
-      const cl = this.el.querySelector('[data-act="close"]');
-      if (cl) cl.addEventListener("click", () => this.close());
+    showError(message, code, extra) {
+      const close = `<button class="b" data-act="close">Close</button>`;
+      const footers = {
+        no_api_key: `${close}<button class="b p" data-act="options">Open Options</button>`,
+        signed_out: `${close}<button class="b p" data-act="signin">Sign in</button>`,
+        no_credits: `${close}<button class="b p" data-act="buy">Buy credits</button>`,
+      };
+      const body = code === "no_credits"
+        ? `<div class="err">${esc(message)}</div><div class="why" style="margin-top:6px">Credits start at $5. Fast mode costs 1 credit per check.</div>`
+        : `<div class="err">${esc(message)}</div>`;
+      this._frame("Polish", "", body, footers[code] || close);
+      const on = (act, fn) => { const b = this.el.querySelector(`[data-act="${act}"]`); if (b) b.addEventListener("click", fn); };
+      on("close", () => this.close());
+      on("options", () => { chrome.runtime.sendMessage({ type: "WA_OPEN_OPTIONS" }); this.close(); });
+      on("buy", () => { chrome.runtime.sendMessage({ type: "WA_OPEN_URL", url: (extra && extra.buyUrl) || "" }); this.close(); });
+      on("signin", async () => {
+        const btn = this.el.querySelector('[data-act="signin"]');
+        btn.disabled = true; btn.textContent = "Signing in…";
+        let resp;
+        try { resp = await chrome.runtime.sendMessage({ type: "WA_SIGN_IN" }); } catch (e) { resp = { error: { message: "Sign-in failed." } }; }
+        if (resp && resp.ok) { if (this.onRetry) this.onRetry(); else this.close(); }
+        else { btn.disabled = false; btn.textContent = "Sign in"; this.showError((resp && resp.error && resp.error.message) || "Sign-in failed.", "signed_out"); }
+      });
     }
 
     showNotice(message) {
@@ -142,7 +157,7 @@
       const canApply = result.has_changes || result.rephrasings.length > 0;
       const footer = `<button class="b" data-act="close">Close</button><button class="b" data-act="copy">Copy</button>
         <button class="b p" data-act="apply" ${canApply ? "" : "disabled"}>Apply</button>`;
-      this._frame(mode === "rephrase" ? "Rephrase" : "Grammar & spelling", result.model || "", body, footer, dir);
+      this._frame(mode === "rephrase" ? "Rephrase" : "Grammar & spelling", result.meta || result.model || "", body, footer, dir);
 
       const selected = () => {
         const r = this.el.querySelector('input[name="c"]:checked');

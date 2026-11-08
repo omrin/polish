@@ -5,7 +5,8 @@
   "description": "Make it shine. Fix grammar & spelling and get better phrasings anywhere you type — powered by Claude.",
   "icons": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
   "action": { "default_title": "Polish — Make it shine.", "default_icon": { "16": "icons/icon16.png", "32": "icons/icon32.png", "48": "icons/icon48.png" } },
-  "permissions": ["storage", "contextMenus"],
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy/ZrZEVbGZZar+u1A09O67s78/NnHx/mMsSYHUEaUy0ARr8fbmMOhr8/kfQa5ahHXPQuKUkAeo6HIzNB/XrDZuB6HlsQLLOCqnLg+rMlfDBpZUP1HxfIAn3BfHl/Q0Yr92LX0gT6tRp8pGWRe52w5wj7icNZJquvNv6H5BOtUxKfLU8SpQHrfmdBfccuhPk6yTWFQ32MUGgohd2Fpk5kRlQVh1vUyhp6bp+e5Weire7sqztRXwr5cCn/thyZWbLEqy5oYhWQ1degoFZIXHSnRrjyak1XGfEaN1FO3P8/tx9ibJyk3bE9AYPRf8t095H39JYNFkCj5NV30Y4mb0E1eQIDAQAB",
+  "permissions": ["storage", "contextMenus", "identity"],
   "host_permissions": ["https://api.anthropic.com/*"],
   "background": { "service_worker": "src/background.js" },
   "content_scripts": [{

@@ -44,7 +44,7 @@ test.after(async () => {
 });
 
 test.beforeEach(async () => {
-  await setSettings({ apiKey: "test-key", apiBaseUrl: `http://127.0.0.1:${api.port}` });
+  await setSettings({ authMode: "api_key", apiKey: "test-key", apiBaseUrl: `http://127.0.0.1:${api.port}` });
   api.requests.length = 0;
   await openPage();
 });
@@ -111,8 +111,8 @@ test("Hebrew text renders right-to-left", async () => {
   assert.equal(await page.inputValue("#he"), "אני הולך לבית הספר מחר.");
 });
 
-test("missing API key shows a helpful error", async () => {
-  await setSettings({ apiBaseUrl: `http://127.0.0.1:${api.port}` });
+test("own-key mode: missing API key shows a helpful error", async () => {
+  await setSettings({ authMode: "api_key", apiBaseUrl: `http://127.0.0.1:${api.port}` });
   await page.click("#ta");
   await page.locator("wa-button-host button.f").click();
   await card().getByText("Add your Anthropic API key").waitFor();
@@ -121,7 +121,7 @@ test("missing API key shows a helpful error", async () => {
 });
 
 test("invalid API key (401)", async () => {
-  await setSettings({ apiKey: "bad-key", apiBaseUrl: `http://127.0.0.1:${api.port}` });
+  await setSettings({ authMode: "api_key", apiKey: "bad-key", apiBaseUrl: `http://127.0.0.1:${api.port}` });
   await page.click("#ta");
   await page.locator("wa-button-host button.f").click();
   await card().getByText("Invalid API key").waitFor();
