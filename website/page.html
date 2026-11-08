@@ -180,6 +180,7 @@ section { padding-block: 64px; border-top: 1px solid var(--line); }
 .dl ol { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; display: grid; gap: 4px; }
 .dl .btn { justify-content: center; margin-top: auto; }
 .dl .note { font-size: 13px; color: var(--muted); }
+.dl .price { font: 400 30px/1.1 var(--display); margin: 0; }
 .dl .rec { outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); outline-offset: -1px; }
 @media (max-width: 860px) { .dl { grid-template-columns: 1fr; } }
 
@@ -226,9 +227,9 @@ footer a { color: var(--muted); }
   <div class="wrap nav">
     <a class="brand" href="#top"><svg aria-hidden="true"><use href="#logo"/></svg>Polish</a>
     <nav aria-label="Sections">
-      <a href="#how">How it works</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a>
+      <a href="#how">How it works</a><a href="#features">Features</a><a href="#pricing">Pricing</a><a href="#faq">FAQ</a>
     </nav>
-    <a class="gh" href="https://github.com/omrin/polish">GitHub</a>
+    <a class="gh" href="/account">Sign in</a>
   </div>
 </header>
 
@@ -244,7 +245,7 @@ footer a { color: var(--muted); }
         <a class="btn" id="cta-mac" href="#download"><svg aria-hidden="true"><use href="#i-mac"/></svg>macOS</a>
         <a class="btn" id="cta-chrome" href="#download"><svg aria-hidden="true"><use href="#i-chrome"/></svg>Chrome</a>
       </div>
-      <p class="fine">Free and open source · English and Hebrew · Powered by Claude</p>
+      <p class="fine">Start free with 75 credits · No API key needed · English and Hebrew · Powered by Claude</p>
     </div>
 
     <div class="demo" id="demo" aria-label="Interactive example">
@@ -335,12 +336,41 @@ footer a { color: var(--muted); }
     <div class="wrap">
       <div class="sec-head">
         <h2>Where your text goes</h2>
-        <p>Polish has no servers and no account. It talks to one place: Anthropic's API, using your own key.</p>
+        <p>Polish sends your text to Claude to check it and keeps nothing. Here is exactly what happens.</p>
       </div>
       <div class="privacy">
-        <div class="warn"><h3>Text you check is sent to Anthropic</h3><p>Each check sends the selected text to Claude over an encrypted connection. Don't use Polish on patient-identifiable or other confidential information unless your organization allows it.</p></div>
-        <div><h3>Your key stays on your computer</h3><p>The API key is saved in your user folder (desktop app) or in your browser profile (extension). Polish never sends it anywhere except Anthropic.</p></div>
-        <div><h3>Open source</h3><p>Every line is on GitHub under the Apache 2.0 license, so you or your IT team can check exactly what it does.</p></div>
+        <div class="warn"><h3>Your text passes through, it isn't stored</h3><p>Each check goes over an encrypted connection to the Polish service, which passes it to Claude (Anthropic) and returns the result. Polish doesn't save the text or the result. Don't use it on patient-identifiable or other confidential information unless your organization allows it.</p></div>
+        <div><h3>What your account holds</h3><p>Your email, your credit balance and its history, and the devices you've signed in on. Payments go through Paddle, so Polish never sees your card.</p></div>
+        <div><h3>Open source</h3><p>Every line is on GitHub under the Apache 2.0 license, so you or your IT team can check exactly what it does. Advanced users can even skip the account and use their own Anthropic API key.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Pay for what you use</h2>
+        <p>No subscription. Buy credits when you need them; they don't expire. A typical check uses 3 to 6 credits, and Fast mode uses 1.</p>
+      </div>
+      <div class="dl">
+        <div>
+          <div class="os">Starter</div>
+          <p class="price">Free</p>
+          <p class="note">75 credits when you sign up, about 20 checks.</p>
+          <a class="btn" href="/account">Create an account</a>
+        </div>
+        <div class="rec">
+          <div class="os">$10</div>
+          <p class="price">1,100 credits</p>
+          <p class="note">10% bonus. About 250 checks, or 1,100 in Fast mode.</p>
+          <a class="btn primary" href="/account#buy">Buy credits</a>
+        </div>
+        <div>
+          <div class="os">$5 or $25</div>
+          <p class="price">500 or 3,000 credits</p>
+          <p class="note">The $25 pack has a 20% bonus.</p>
+          <a class="btn" href="/account#buy">Buy credits</a>
+        </div>
       </div>
     </div>
   </section>
@@ -349,24 +379,24 @@ footer a { color: var(--muted); }
     <div class="wrap">
       <div class="sec-head">
         <h2>Download</h2>
-        <p>You'll also need an Anthropic API key from <a href="https://console.anthropic.com/">console.anthropic.com</a>. Polish asks for it the first time it starts.</p>
+        <p>Install Polish and sign in. New accounts get 75 free credits, so you can try it right away.</p>
       </div>
       <div class="dl">
         <div id="dl-win">
           <div class="os"><svg aria-hidden="true"><use href="#i-win"/></svg>Windows</div>
-          <ol><li>Run <b>Polish-Setup.exe</b>. No administrator rights needed.</li><li>Paste your API key in Settings.</li><li>Look for the P in the system tray.</li></ol>
+          <ol><li>Run <b>Polish-Setup.exe</b>. No administrator rights needed.</li><li>Click <b>Sign in</b> and approve in your browser.</li><li>Look for the P in the system tray.</li></ol>
           <p class="note">Not code-signed yet. If SmartScreen appears, click <b>More info</b>, then <b>Run anyway</b>.</p>
           <a class="btn primary" href="https://github.com/omrin/polish/releases/latest/download/Polish-Setup.exe"><svg aria-hidden="true"><use href="#i-win"/></svg>Polish-Setup.exe <small>Windows 10/11</small></a>
         </div>
         <div id="dl-mac">
           <div class="os"><svg aria-hidden="true"><use href="#i-mac"/></svg>macOS</div>
-          <ol><li>Open <b>Polish-macOS.dmg</b> and drag Polish to Applications.</li><li>Right-click Polish and choose <b>Open</b> the first time.</li><li>Allow Accessibility and Input Monitoring when asked.</li></ol>
+          <ol><li>Open <b>Polish-macOS.dmg</b> and drag Polish to Applications.</li><li>Right-click Polish and choose <b>Open</b> the first time.</li><li>Sign in, then allow Accessibility and Input Monitoring when asked.</li></ol>
           <p class="note">Apple Silicon. Needs macOS 12 or later.</p>
           <a class="btn" href="https://github.com/omrin/polish/releases/latest/download/Polish-macOS.dmg"><svg aria-hidden="true"><use href="#i-mac"/></svg>Polish-macOS.dmg</a>
         </div>
         <div id="dl-chrome">
           <div class="os"><svg aria-hidden="true"><use href="#i-chrome"/></svg>Chrome and Edge</div>
-          <ol><li>Unzip <b>Polish-Chrome-Extension.zip</b>.</li><li>Open <kbd>chrome://extensions</kbd> and turn on Developer mode.</li><li>Click <b>Load unpacked</b> and choose the folder.</li></ol>
+          <ol><li>Unzip <b>Polish-Chrome-Extension.zip</b>.</li><li>Open <kbd>chrome://extensions</kbd> and turn on Developer mode.</li><li>Click <b>Load unpacked</b>, choose the folder, then sign in.</li></ol>
           <p class="note">Works in text boxes, email editors and chats. Not in Google Docs.</p>
           <a class="btn" href="https://github.com/omrin/polish/releases/latest/download/Polish-Chrome-Extension.zip"><svg aria-hidden="true"><use href="#i-chrome"/></svg>Extension .zip</a>
         </div>
@@ -378,7 +408,9 @@ footer a { color: var(--muted); }
     <div class="wrap">
       <div class="sec-head"><h2>Questions</h2><p>Short answers to what people ask first.</p></div>
       <div class="faq">
-        <details><summary>Is Polish free?</summary><p>The app is free and open source. Checks use your own Anthropic API key, so you pay Anthropic for what you use. A typical paragraph costs a fraction of a cent, and fast mode costs less.</p></details>
+        <details><summary>How much does it cost?</summary><p>The apps are free. Checks use credits: you get 75 free when you sign up, then buy packs from $5 for 500 credits. A typical check uses 3 to 6 credits, a long rephrase more, and Fast mode always uses 1.</p></details>
+        <details><summary>Do credits expire?</summary><p>No. Buy once and use them whenever you like. There's no subscription.</p></details>
+        <details><summary>Can I use my own Anthropic API key instead?</summary><p>Yes. In Settings, choose "My own Anthropic API key". Polish then talks to Anthropic directly and doesn't use credits.</p></details>
         <details><summary>Does it work offline?</summary><p>No. Claude does the checking in Anthropic's cloud, so you need an internet connection that can reach api.anthropic.com. If a firewall blocks it, Polish shows "Can't reach the Anthropic API".</p></details>
         <details><summary>Which languages does it support?</summary><p>English and Hebrew are tested, including right-to-left layout. Other languages generally work too, since Claude keeps the language you wrote in.</p></details>
         <details><summary>Does it work in Google Docs?</summary><p>The Chrome extension can't reach Google Docs, because Docs doesn't use normal text boxes. The desktop app works there: select the text and press the shortcut.</p></details>
@@ -393,7 +425,7 @@ footer a { color: var(--muted); }
   <div class="wrap row">
     <a class="brand" href="#top"><svg aria-hidden="true" style="width:24px;height:24px"><use href="#logo"/></svg>Polish</a>
     <span class="tag">Make it shine.</span>
-    <span class="links"><a href="https://github.com/omrin/polish">GitHub</a><a href="https://github.com/omrin/polish/releases">Releases</a><a href="https://github.com/omrin/polish/blob/main/LICENSE">Apache 2.0</a></span>
+    <span class="links"><a href="/account">Account</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="https://github.com/omrin/polish">GitHub</a></span>
   </div>
 </footer>
 

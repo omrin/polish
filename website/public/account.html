@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/css/site.css">
+<title>Account · Polish</title>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><a class="brand" href="/"><img src="/icon.png" alt="">Polish</a><span class="links"><a href="/#pricing">Pricing</a><a href="/#download">Download</a><a href="/account">Account</a></span></div></header>
+<main><div class="wrap stack">
+  <div id="loading" class="muted">Loading…</div>
+  <div id="page" class="stack" hidden>
+    <div>
+      <h1>Your account</h1>
+      <p class="muted">Signed in as <b id="email"></b></p>
+    </div>
+    <p id="msg" class="msg" role="status" hidden></p>
+    <section class="card">
+      <h2>Balance</h2>
+      <div class="balance" id="balance"></div>
+      <p class="muted" id="checks"></p>
+      <p class="muted" style="font-size:14px;margin:0">A typical check costs 3 to 6 credits; a long rephrase costs more. Fast mode is always 1 credit. 100 credits = $1.</p>
+    </section>
+    <section class="card" id="buy">
+      <h2>Buy credits</h2>
+      <p class="muted">One-time purchase, no subscription. Credits don't expire.</p>
+      <div class="packs" id="packs"></div>
+      <p class="muted" id="paddle-off" hidden style="margin-top:12px">Purchases aren't switched on yet.</p>
+      <p class="muted" style="font-size:13px;margin:12px 0 0">Payments are handled by Paddle, our reseller, who also issues your receipt and handles VAT.</p>
+    </section>
+    <section class="card">
+      <h2>Purchases</h2>
+      <div class="scroll"><table><thead><tr><th>Date</th><th>What</th><th class="num">Credits</th></tr></thead><tbody id="purchases"></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2>Usage, last 30 days</h2>
+      <div class="scroll"><table><thead><tr><th>Day</th><th class="num">Checks</th><th class="num">Credits</th></tr></thead><tbody id="usage"></tbody></table></div>
+    </section>
+    <section class="card">
+      <h2>Signed-in devices</h2>
+      <div class="scroll"><table><tbody id="devices"></tbody></table></div>
+    </section>
+    <section class="row">
+      <button class="btn" id="signout">Sign out</button>
+      <button class="btn danger" id="delete">Delete account</button>
+    </section>
+    <section class="card" id="confirm-delete" hidden>
+      <h2>Delete your account?</h2>
+      <p class="muted">This signs out every device and removes your email. Unused credits are lost and can't be refunded afterwards.</p>
+      <div class="row"><button class="btn danger" id="delete-yes">Delete my account</button><button class="btn" id="delete-no">Keep it</button></div>
+    </section>
+  </div>
+</div></main>
+<footer><div class="wrap"><span>Polish · Make it shine.</span><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="https://github.com/omrin/polish">GitHub</a></div></footer>
+<script src="/js/common.js"></script>
+<script src="https://cdn.paddle.com/paddle/v2/paddle.js"></script>
+<script src="/js/account.js"></script>
+</body>
+</html>

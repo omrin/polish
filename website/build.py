@@ -15,5 +15,7 @@ HEAD = """<!doctype html>
 
 if __name__ == "__main__":
     page = (HERE / "page.html").read_text(encoding="utf-8")
-    (HERE / "index.html").write_text(HEAD + page + "\n</body>\n</html>\n", encoding="utf-8")
-    print("wrote website/index.html")
+    html = HEAD + page + "\n</body>\n</html>\n"
+    (HERE / "index.html").write_text(html, encoding="utf-8")          # GitHub Pages
+    (HERE / "public" / "index.html").write_text(html.replace('href="icon.png"', 'href="/icon.png"'), encoding="utf-8")  # Worker
+    print("wrote website/index.html and website/public/index.html")

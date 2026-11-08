@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/css/site.css">
+<title>Sign in · Polish</title>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><a class="brand" href="/"><img src="/icon.png" alt="">Polish</a><span class="links"><a href="/#pricing">Pricing</a><a href="/#download">Download</a><a href="/account">Account</a></span></div></header>
+<main><div class="wrap narrow">
+  <h1>Sign in</h1>
+  <p class="muted">New here? Signing in creates your account, with 75 free credits to try Polish.</p>
+  <div class="card stack">
+    <div id="google-box" class="stack" hidden>
+      <a class="btn full" id="google" href="/auth/google/start">Continue with Google</a>
+      <div class="or">or use your email</div>
+    </div>
+    <form id="email-form" class="stack" novalidate>
+      <div><label for="email">Email</label><input id="email" type="email" autocomplete="email" required placeholder="you@example.com"></div>
+      <button class="btn primary full" id="send" type="submit">Email me a sign-in code</button>
+    </form>
+    <form id="code-form" class="stack" hidden novalidate>
+      <p>We sent a 6-digit code to <b id="sent-to"></b>. It expires in 10 minutes.</p>
+      <div><label for="code">Code</label><input id="code" class="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="\d{6}" required></div>
+      <button class="btn primary full" id="verify" type="submit">Sign in</button>
+      <button class="btn full" id="back" type="button">Use a different email</button>
+    </form>
+    <p id="msg" class="msg err" role="alert" hidden></p>
+  </div>
+</div></main>
+<footer><div class="wrap"><span>Polish · Make it shine.</span><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="https://github.com/omrin/polish">GitHub</a></div></footer>
+<script src="/js/common.js"></script>
+<script src="/js/signin.js"></script>
+</body>
+</html>

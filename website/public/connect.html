@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="icon" href="/icon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="/css/site.css">
+<title>Connect · Polish</title>
+</head>
+<body>
+<header class="top"><div class="wrap nav"><a class="brand" href="/"><img src="/icon.png" alt="">Polish</a><span class="links"><a href="/#pricing">Pricing</a><a href="/#download">Download</a><a href="/account">Account</a></span></div></header>
+<main><div class="wrap narrow">
+  <div id="loading" class="muted">Loading…</div>
+  <div id="ask" class="stack" hidden>
+    <h1 id="ask-title">Connect Polish</h1>
+    <p id="ask-text" class="muted"></p>
+    <div id="code-box" class="code-show" hidden></div>
+    <p id="code-hint" class="muted" hidden>Check that this code matches the one shown in the Polish app.</p>
+    <div class="row">
+      <button class="btn primary" id="approve">Connect</button>
+      <button class="btn" id="deny">Cancel</button>
+    </div>
+    <p class="muted" style="font-size:14px">Signed in as <b id="who"></b>. <a href="#" id="switch">Not you?</a></p>
+  </div>
+  <div id="done" class="stack" hidden>
+    <h1>You're connected</h1>
+    <p class="muted" id="done-text">Go back to Polish. You can close this tab.</p>
+  </div>
+  <p id="msg" class="msg err" role="alert" hidden></p>
+</div></main>
+<footer><div class="wrap"><span>Polish · Make it shine.</span><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="/refunds">Refunds</a><a href="https://github.com/omrin/polish">GitHub</a></div></footer>
+<script src="/js/common.js"></script>
+<script src="/js/connect.js"></script>
+</body>
+</html>

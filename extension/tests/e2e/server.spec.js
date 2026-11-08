@@ -55,7 +55,7 @@ test.before(async () => {
   ].join("\n"));
   wr(["d1", "migrations", "apply", "polish-db", "--local", "--persist-to", persist]);
   wrangler = spawn("npx", ["wrangler", "dev", "--port", String(PORT), "--ip", "127.0.0.1", "--persist-to", persist, "--test-scheduled"],
-    { cwd: SERVER, env: env(), stdio: "ignore" });
+    { cwd: SERVER, env: env(), stdio: "ignore", detached: true });
   await waitFor(`${BASE}/v1/config`);
 
   const userDir = fs.mkdtempSync(path.join(os.tmpdir(), "wa-e2e-acct-"));
@@ -71,7 +71,8 @@ test.before(async () => {
 test.after(async () => {
   await ctx?.close();
   api?.server.close();
-  wrangler?.kill();
+  // wrangler starts workerd children; kill the whole process group so no server is left running.
+  try { process.kill(-wrangler.pid, "SIGTERM"); } catch (e) { /* already gone */ }
   try { fs.unlinkSync(path.join(SERVER, ".dev.vars")); } catch (e) { /* ignore */ }
 });
 
