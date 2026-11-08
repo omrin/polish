@@ -3,7 +3,7 @@ import logging
 import sys
 from pathlib import Path
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QDir, QLockFile, Qt
 from PySide6.QtGui import QAction, QColor, QFont, QIcon, QPainter, QPixmap
 from PySide6.QtWidgets import QApplication, QMenu, QSystemTrayIcon
 
@@ -177,6 +177,11 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     qapp = QApplication(sys.argv)
     qapp.setQuitOnLastWindowClosed(False)
+    # Only one Polish at a time (e.g. started by Windows at login and again from the Start menu).
+    lock = QLockFile(str(Path(QDir.tempPath()) / "polish-app.lock"))
+    if not lock.tryLock(100):
+        log.info("Polish is already running.")
+        return 0
     qapp.setApplicationName("Polish")
     qapp.setWindowIcon(make_icon())
     if not QSystemTrayIcon.isSystemTrayAvailable():

@@ -17,6 +17,16 @@ It runs in two places, and both use the same prompt and the same response format
 
 It handles English and Hebrew. Hebrew text stays in Hebrew, and the UI switches to right-to-left on its own.
 
+## Download
+
+| | |
+|---|---|
+| **Windows 10/11** | [Polish-Setup.exe](https://github.com/omrin/polish/releases/latest/download/Polish-Setup.exe). Run it; no administrator rights are needed |
+| **macOS 12+** | [Polish-macOS.dmg](https://github.com/omrin/polish/releases/latest/download/Polish-macOS.dmg). Drag Polish to Applications |
+| **Chrome / Edge** | [Polish-Chrome-Extension.zip](https://github.com/omrin/polish/releases/latest/download/Polish-Chrome-Extension.zip). Unzip it, then follow step 3 below |
+
+All versions: [Releases](https://github.com/omrin/polish/releases). The apps aren't code-signed yet. On Windows, if SmartScreen appears, click **More info → Run anyway**. On macOS, right-click Polish.app and choose **Open** the first time.
+
 ---
 
 ## ⚠️ Privacy first
@@ -36,13 +46,15 @@ Create a key at <https://console.anthropic.com/> under **API Keys**. Both apps a
 
 ### Windows
 
+The easiest way is the installer under **Download** above. To run from source instead:
+
 1. Install Python 3.10+ from <https://www.python.org/downloads/>. During setup, tick **"Add python.exe to PATH"**.
 2. Double-click **`desktop\run_windows.bat`**. The first run installs dependencies, which takes about a minute.
 3. The blue **P** icon appears in the system tray, and the Settings window opens. Paste your API key there.
 
-To get a single **`Polish.exe`** you can share or copy to other PCs without Python, run
-`desktop\build_windows_exe.bat`. The output is `desktop\dist\Polish.exe`.
-To start it with Windows, put a shortcut to it in `shell:startup`.
+To build the installer yourself, run `desktop\build_windows_exe.bat`. It produces `desktop\dist\Polish-Setup.exe`
+if [NSIS](https://nsis.sourceforge.io) is installed. Releases are built automatically by GitHub Actions
+(`.github/workflows/release.yml`) when a version tag is pushed: `git tag v1.0.1 && git push origin v1.0.1`.
 
 ### macOS / Linux
 

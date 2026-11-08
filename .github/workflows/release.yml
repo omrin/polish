@@ -1,0 +1,121 @@
+# Builds the Polish downloads and attaches them to a GitHub Release.
+#   Release:  git tag v1.0.0 && git push origin v1.0.0
+#   Test run: Actions tab -> "Build & release" -> Run workflow (builds without releasing)
+name: Build & release
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r desktop/requirements.txt -r desktop/requirements-dev.txt
+      - run: python -m pytest -q desktop
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: node --test extension/tests/unit/*.test.js
+
+  windows:
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r desktop/requirements.txt -r desktop/requirements-dev.txt
+      - name: Build app
+        working-directory: desktop
+        run: pyinstaller --noconfirm polish.spec
+      - name: Install NSIS
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\NSIS\makensis.exe")) { choco install nsis -y --no-progress }
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}"
+          if ($version -notmatch '^v\d') { $version = "v0.0.0" }
+          $version = $version.TrimStart('v')
+          & "${env:ProgramFiles(x86)}\NSIS\makensis.exe" "/DVERSION=$version" "/DSRCDIR=$env:GITHUB_WORKSPACE\desktop\dist\Polish" "/DOUTFILE=$env:GITHUB_WORKSPACE\Polish-Setup.exe" installer\windows\polish.nsi
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows
+          path: Polish-Setup.exe
+
+  macos:
+    needs: test
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r desktop/requirements.txt -r desktop/requirements-dev.txt
+      - name: Build app
+        working-directory: desktop
+        run: pyinstaller --noconfirm polish.spec
+      - name: Build disk image
+        run: |
+          mkdir -p dmg && cp -R desktop/dist/Polish.app dmg/ && ln -s /Applications dmg/Applications
+          hdiutil create -volname Polish -srcfolder dmg -ov -format UDZO Polish-macOS.dmg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: macos
+          path: Polish-macOS.dmg
+
+  extension:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package Chrome extension
+        run: |
+          mkdir -p build/Polish-Chrome-Extension
+          cp -R extension/manifest.json extension/src extension/icons build/Polish-Chrome-Extension/
+          cd build && zip -r ../Polish-Chrome-Extension.zip Polish-Chrome-Extension
+      - uses: actions/upload-artifact@v4
+        with:
+          name: extension
+          path: Polish-Chrome-Extension.zip
+
+  release:
+    needs: [windows, macos, extension]
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+      - uses: softprops/action-gh-release@v2
+        with:
+          name: Polish ${{ github.ref_name }}
+          body: |
+            **Polish: Make it shine.** Fix grammar & spelling and get better phrasings anywhere you type.
+
+            | Download | For |
+            |---|---|
+            | **Polish-Setup.exe** | Windows 10/11. Works in every app. |
+            | **Polish-macOS.dmg** | macOS 12+. Works in every app. |
+            | **Polish-Chrome-Extension.zip** | Chrome / Edge. Unzip, then open `chrome://extensions`, turn on Developer mode, and click **Load unpacked**. |
+
+            You need an Anthropic API key (https://console.anthropic.com). Text you check is sent to Anthropic's API.
+
+            The apps aren't code-signed yet. On Windows, if SmartScreen appears, click **More info → Run anyway**. On macOS, right-click Polish.app and choose **Open** the first time.
+          files: |
+            Polish-Setup.exe
+            Polish-macOS.dmg
+            Polish-Chrome-Extension.zip
