@@ -2,6 +2,7 @@
 
 <h1 align="center">Polish</h1>
 <p align="center"><i>Make it shine.</i></p>
+<p align="center"><a href="https://omrin.github.io/polish/">Website</a> · <a href="https://github.com/omrin/polish/releases/latest">Download</a></p>
 
 Polish is a Grammarly-style writing assistant powered by Claude. At the push of a button it:
 

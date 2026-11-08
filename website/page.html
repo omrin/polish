@@ -1,0 +1,469 @@
+<title>Polish</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Polish fixes grammar and spelling and suggests better phrasing in any app, with one keystroke. Make it shine.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one centered column (max 1120px). Hero = headline + live before/after demo, then plain sections. */
+:root {
+  --bg: #f6f8fb;
+  --surface: #ffffff;
+  --fg: #0f1420;
+  --muted: #586274;
+  --line: #e0e5ee;
+  --accent: #2f7de1;
+  --teal: #1fb89b;
+  --violet: #6a4ce0;
+  --del-fg: #c2342b; --del-bg: #fdecea;
+  --ins-fg: #157a4a; --ins-bg: #e2f6ea;
+  --kbd-bg: #eef1f6;
+  --shadow: 0 1px 2px rgba(16, 24, 40, .05), 0 12px 32px -12px rgba(30, 60, 140, .18);
+  --aurora: linear-gradient(120deg, #4fd9bd 0%, #3b8beb 50%, #6a4ce0 100%);
+  --display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --body: "Geist", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono: "Geist Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0c0f16; --surface: #141a25; --fg: #e8ecf4; --muted: #9aa5b8; --line: #252d3c;
+    --accent: #6aa8ff; --teal: #4fd9bd; --violet: #a493ff;
+    --del-fg: #ff8a80; --del-bg: #3a1d1f; --ins-fg: #7be0a8; --ins-bg: #173327;
+    --kbd-bg: #1d2431; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0c0f16; --surface: #141a25; --fg: #e8ecf4; --muted: #9aa5b8; --line: #252d3c;
+  --accent: #6aa8ff; --teal: #4fd9bd; --violet: #a493ff;
+  --del-fg: #ff8a80; --del-bg: #3a1d1f; --ins-fg: #7be0a8; --ins-bg: #173327;
+  --kbd-bg: #1d2431; --shadow: 0 1px 2px rgba(0,0,0,.4), 0 16px 40px -16px rgba(0,0,0,.6);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  background: var(--bg); color: var(--fg);
+  font: 400 16px/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+.wrap {
+  max-width: 1120px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+a { color: var(--accent); }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { margin: 0; }
+kbd {
+  font: 500 .82em/1 var(--mono); background: var(--kbd-bg); color: var(--fg);
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: .22em .45em; white-space: nowrap;
+}
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+
+/* ---------- header ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+header.top {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+  background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+}
+.nav { display: flex; align-items: center; gap: 24px; padding-block: 14px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--fg); font-weight: 600; font-size: 18px; letter-spacing: -.01em; }
+.brand svg { width: 30px; height: 30px; }
+.nav nav { display: flex; gap: 22px; margin-left: auto; }
+.nav nav a { color: var(--muted); text-decoration: none; font-size: 14.5px; }
+.nav nav a:hover { color: var(--fg); }
+.nav .gh { font-size: 14.5px; font-weight: 500; text-decoration: none; color: var(--fg); border: 1px solid var(--line); padding: 6px 12px; border-radius: 8px; background: var(--surface); }
+@media (max-width: 760px) { .nav nav { display: none; } .nav .gh { margin-left: auto; } }
+
+/* ---------- hero ---------- */
+.hero { display: grid; grid-template-columns: 1.02fr 1fr; gap: 56px; align-items: center; padding-block: 72px 56px; }
+.hero > * { min-width: 0; }
+.eyebrow { font: 500 12.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.eyebrow::before { content: ""; width: 18px; height: 2px; background: var(--aurora); border-radius: 2px; }
+.hero h1 { font: 400 clamp(56px, 8vw, 96px)/.95 var(--display); letter-spacing: -.02em; margin-top: 18px; }
+.hero h1 em { font-style: italic; background: var(--aurora); -webkit-background-clip: text; background-clip: text; color: transparent; padding-right: .06em; }
+.lede { font-size: 19px; color: var(--muted); margin-top: 22px; max-width: 34ch; }
+.lede strong { color: var(--fg); font-weight: 500; }
+.cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 9px; text-decoration: none; font-weight: 500; font-size: 15px;
+  padding: 11px 16px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+.btn.primary { background: var(--fg); color: var(--bg); border-color: var(--fg); }
+.btn svg { width: 17px; height: 17px; flex: none; }
+.btn small { font-weight: 400; opacity: .7; font-size: 12.5px; }
+.fine { margin-top: 16px; font-size: 13.5px; color: var(--muted); }
+
+/* ---------- demo ---------- */
+.demo {
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.demo-bar { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+.dots { display: flex; gap: 6px; } .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); display: block; }
+.demo-bar .app { margin-left: 6px; }
+.lang { margin-left: auto; display: flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.lang button { all: unset; cursor: pointer; padding: 3px 10px; font-size: 12.5px; color: var(--muted); }
+.lang button[aria-pressed="true"] { background: var(--kbd-bg); color: var(--fg); font-weight: 500; }
+.demo-body { padding: 22px 22px 8px; }
+.mail-meta { font-size: 13px; color: var(--muted); display: grid; gap: 2px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
+.text { font-size: 17px; line-height: 1.75; padding-block: 16px; min-height: 7.2em; }
+.text del { color: var(--del-fg); background: var(--del-bg); text-decoration-thickness: 1.5px; border-radius: 3px; padding: 0 2px; }
+.text ins { color: var(--ins-fg); background: var(--ins-bg); text-decoration: none; border-radius: 3px; padding: 0 2px; }
+.text.anim del, .text.anim ins { animation: pop .5s both; animation-delay: calc(var(--i) * 140ms); }
+@keyframes pop { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .text.anim del, .text.anim ins, .alts.anim .alt { animation: none; } }
+.alts { display: grid; gap: 8px; padding-bottom: 16px; }
+.alt { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 15px; line-height: 1.5; }
+.alt b { display: block; font: 500 11.5px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.alt:first-child { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); background: color-mix(in srgb, var(--accent) 7%, var(--surface)); }
+.alts.anim .alt { animation: pop .45s both; animation-delay: calc(var(--i) * 120ms); }
+.demo-actions { display: flex; flex-wrap: wrap; gap: 8px; padding: 12px 22px 18px; border-top: 1px solid var(--line); align-items: center; }
+.demo-actions button {
+  font: 500 14px/1 var(--body); cursor: pointer; display: inline-flex; gap: 8px; align-items: center;
+  border: 1px solid var(--line); background: var(--surface); color: var(--fg); padding: 9px 12px; border-radius: 9px;
+}
+.demo-actions button[aria-pressed="true"] { border-color: var(--fg); box-shadow: inset 0 0 0 1px var(--fg); }
+.demo-actions .status { margin-left: auto; font-size: 13px; color: var(--muted); }
+[dir="rtl"] .text, [dir="rtl"] .alt { font-size: 17px; }
+
+/* ---------- sections ---------- */
+section { padding-block: 64px; border-top: 1px solid var(--line); }
+.sec-head { display: grid; grid-template-columns: 1fr 1.6fr; gap: 40px; align-items: end; margin-bottom: 36px; }
+.sec-head h2 { font: 400 clamp(36px, 4.6vw, 52px)/1.02 var(--display); letter-spacing: -.01em; }
+.sec-head p { color: var(--muted); font-size: 17px; max-width: 58ch; }
+@media (max-width: 860px) { .hero { grid-template-columns: 1fr; gap: 40px; padding-block: 48px 40px; } .sec-head { grid-template-columns: 1fr; gap: 12px; } }
+
+.apps { display: flex; flex-wrap: wrap; gap: 8px 10px; }
+.apps span { font-size: 14.5px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); }
+
+.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+.steps > div { padding: 24px; min-width: 0; }
+.steps > div + div { border-left: 1px solid var(--line); }
+.steps .n { font: 500 12.5px/1 var(--mono); color: var(--muted); }
+.steps h3 { font-size: 19px; font-weight: 600; margin-top: 14px; letter-spacing: -.01em; }
+.steps p { color: var(--muted); margin-top: 8px; font-size: 15.5px; }
+@media (max-width: 760px) { .steps { grid-template-columns: 1fr; } .steps > div + div { border-left: 0; border-top: 1px solid var(--line); } }
+
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 34px 40px; }
+.features > div { min-width: 0; }
+.features h3 { font-size: 17px; font-weight: 600; display: flex; gap: 10px; align-items: center; }
+.features h3 svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
+.features p { color: var(--muted); margin-top: 8px; font-size: 15.5px; }
+@media (max-width: 860px) { .features { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .features { grid-template-columns: 1fr; } }
+
+.keys { width: 100%; border-collapse: collapse; font-size: 15.5px; }
+.keys td { padding: 14px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+.keys td:first-child { width: 42%; padding-right: 16px; white-space: nowrap; }
+.keys td:last-child { color: var(--muted); }
+.keys tr:last-child td { border-bottom: 0; }
+.table-scroll { overflow-x: auto; }
+
+.privacy { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.privacy > div { border: 1px solid var(--line); border-radius: 14px; padding: 22px; background: var(--surface); min-width: 0; }
+.privacy h3 { font-size: 16.5px; font-weight: 600; }
+.privacy p { color: var(--muted); margin-top: 6px; font-size: 15.5px; }
+.privacy .warn { grid-column: 1 / -1; border-color: color-mix(in srgb, #e8a33a 55%, var(--line)); background: color-mix(in srgb, #e8a33a 9%, var(--surface)); }
+@media (max-width: 640px) { .privacy { grid-template-columns: 1fr; } }
+
+.dl { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.dl > div { border: 1px solid var(--line); border-radius: 14px; padding: 24px; background: var(--surface); display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.dl .os { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 600; }
+.dl .os svg { width: 22px; height: 22px; }
+.dl ol { margin: 0; padding-left: 20px; color: var(--muted); font-size: 15px; display: grid; gap: 4px; }
+.dl .btn { justify-content: center; margin-top: auto; }
+.dl .note { font-size: 13px; color: var(--muted); }
+.dl .rec { outline: 2px solid color-mix(in srgb, var(--accent) 70%, transparent); outline-offset: -1px; }
+@media (max-width: 860px) { .dl { grid-template-columns: 1fr; } }
+
+.faq { display: grid; gap: 0; }
+.faq details { border-bottom: 1px solid var(--line); padding-block: 16px; }
+.faq summary { cursor: pointer; font-weight: 500; font-size: 17px; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--muted); font: 400 20px/1 var(--mono); }
+.faq details[open] summary::after { content: "–"; }
+.faq details p { color: var(--muted); margin-top: 10px; max-width: 70ch; }
+
+footer { border-top: 1px solid var(--line); padding-block: 36px 48px; color: var(--muted); font-size: 14px; }
+footer .row { display: flex; flex-wrap: wrap; gap: 16px 28px; align-items: center; }
+footer .brand { font-size: 16px; }
+footer .tag { font: italic 400 20px/1 var(--display); color: var(--fg); }
+footer .links { margin-left: auto; display: flex; gap: 20px; }
+footer a { color: var(--muted); }
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="pl-aurora" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#5ee7c8"/><stop offset=".5" stop-color="#3b8beb"/><stop offset="1" stop-color="#6a4ce0"/></linearGradient>
+    <linearGradient id="pl-sheen" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".3"/><stop offset=".6" stop-color="#fff" stop-opacity="0"/></linearGradient>
+    <symbol id="logo" viewBox="0 0 128 128">
+      <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#pl-aurora)"/>
+      <rect x="4" y="4" width="120" height="120" rx="30" fill="url(#pl-sheen)"/>
+      <path d="M47 98 V31 H67 a19.5 19.5 0 0 1 0 39 H47" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M91 78 C92.2 89.8 92.2 89.8 104 91 C92.2 92.2 92.2 92.2 91 104 C89.8 92.2 89.8 92.2 78 91 C89.8 89.8 89.8 89.8 91 78 Z" fill="#fff"/>
+      <path d="M101 71 C101.6 75.4 101.6 75.4 106 76 C101.6 76.6 101.6 76.6 101 81 C100.4 76.6 100.4 76.6 96 76 C100.4 75.4 100.4 75.4 101 71 Z" fill="#fff"/>
+    </symbol>
+    <symbol id="i-win" viewBox="0 0 24 24"><path fill="currentColor" d="M3 5.1 10.4 4v7.2H3V5.1Zm8.4-1.2L21 2.5v8.7h-9.6V3.9ZM3 12.8h7.4V20L3 18.9v-6.1Zm8.4 0H21v8.7l-9.6-1.4v-7.3Z"/></symbol>
+    <symbol id="i-mac" viewBox="0 0 24 24"><path fill="currentColor" d="M16.4 12.6c0-2.4 2-3.6 2.1-3.7-1.1-1.7-2.9-1.9-3.5-1.9-1.5-.2-2.9.9-3.7.9-.8 0-1.9-.9-3.2-.8-1.6 0-3.1 1-4 2.4-1.7 3-.4 7.4 1.2 9.8.8 1.2 1.8 2.5 3 2.4 1.2 0 1.7-.8 3.1-.8 1.5 0 1.9.8 3.2.8 1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.8-.1 0-2.5-1-2.5-3.9ZM14 5.5c.7-.8 1.1-1.9 1-3-1 0-2.1.7-2.8 1.5-.6.7-1.2 1.8-1 2.9 1 .1 2.1-.6 2.8-1.4Z"/></symbol>
+    <symbol id="i-chrome" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8.4h8.6M8.9 13.8 4.6 6.4M15.1 13.8l-4.3 7.6" stroke="currentColor" stroke-width="1.8" fill="none"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4L19 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2c.3 6.9.9 7.6 10 10-9.1 2.4-9.7 3.1-10 10-.3-6.9-.9-7.6-10-10 9.1-2.4 9.7-3.1 10-10Z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 12h18M12 3c2.6 3 2.6 15 0 18M12 3c-2.6 3-2.6 15 0 18" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24"><rect x="6" y="4" width="12" height="17" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 4.5V3h6v1.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </defs>
+</svg>
+
+<header class="top">
+  <div class="wrap nav">
+    <a class="brand" href="#top"><svg aria-hidden="true"><use href="#logo"/></svg>Polish</a>
+    <nav aria-label="Sections">
+      <a href="#how">How it works</a><a href="#features">Features</a><a href="#privacy">Privacy</a><a href="#faq">FAQ</a>
+    </nav>
+    <a class="gh" href="https://github.com/omrin/polish">GitHub</a>
+  </div>
+</header>
+
+<main id="top">
+  <div class="wrap hero">
+    <div>
+      <div class="eyebrow">Writing assistant for every app</div>
+      <h1>Make it <em>shine.</em></h1>
+      <p class="lede">Select text anywhere and press <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>G</kbd>. <strong>Polish fixes grammar and spelling</strong>, explains each change, and offers better ways to say it.</p>
+      <div class="cta">
+        <a class="btn primary" id="cta-main" href="#download"><svg aria-hidden="true"><use href="#i-win"/></svg>Download for Windows</a>
+        <a class="btn" id="cta-win" href="#download" hidden><svg aria-hidden="true"><use href="#i-win"/></svg>Windows</a>
+        <a class="btn" id="cta-mac" href="#download"><svg aria-hidden="true"><use href="#i-mac"/></svg>macOS</a>
+        <a class="btn" id="cta-chrome" href="#download"><svg aria-hidden="true"><use href="#i-chrome"/></svg>Chrome</a>
+      </div>
+      <p class="fine">Free and open source · English and Hebrew · Powered by Claude</p>
+    </div>
+
+    <div class="demo" id="demo" aria-label="Interactive example">
+      <div class="demo-bar">
+        <span class="dots" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span class="app">Outlook · New message</span>
+        <span class="lang" role="group" aria-label="Example language">
+          <button type="button" id="lang-en" aria-pressed="true">EN</button>
+          <button type="button" id="lang-he" aria-pressed="false">עב</button>
+        </span>
+      </div>
+      <div class="demo-body" id="demo-body">
+        <div class="mail-meta"><span id="m-to">To: Ward 4 team</span><span id="m-subj">Subject: Weekly report</span></div>
+        <p class="text" id="demo-text"></p>
+        <div class="alts" id="demo-alts" hidden></div>
+      </div>
+      <div class="demo-actions">
+        <button type="button" id="b-before" aria-pressed="false">Before</button>
+        <button type="button" id="b-fix" aria-pressed="true">Fix <kbd>Ctrl Alt G</kbd></button>
+        <button type="button" id="b-reph" aria-pressed="false">Rephrase <kbd>Ctrl Alt R</kbd></button>
+        <span class="status" id="demo-status" aria-live="polite"></span>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Works where you write</h2>
+        <p>The desktop app works in any program that lets you select text. The Chrome extension adds a button to every text box on the web.</p>
+      </div>
+      <div class="apps">
+        <span>Microsoft Word</span><span>Outlook</span><span>Teams</span><span>Gmail</span><span>Slack</span><span>WhatsApp Desktop</span>
+        <span>Notepad</span><span>Web forms</span><span>Patient-record notes</span><span>LinkedIn</span><span>Any text box in Chrome</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>How it works</h2>
+        <p>No new editor to learn and nothing to paste. Polish works on the text you already selected.</p>
+      </div>
+      <div class="steps">
+        <div><span class="n">Step 1</span><h3>Select your text</h3><p>Highlight a sentence, a paragraph or a whole email in any app.</p></div>
+        <div><span class="n">Step 2</span><h3>Press the shortcut</h3><p><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>G</kbd> to fix, or <kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>R</kbd> to rephrase. A card appears next to your cursor.</p></div>
+        <div><span class="n">Step 3</span><h3>Replace it</h3><p>Review the changes and press <kbd>Enter</kbd>. The new text goes straight back where it was.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Small tool, sharp edits</h2>
+        <p>Polish makes the smallest change that fixes the problem, so your text still sounds like you.</p>
+      </div>
+      <div class="features">
+        <div><h3><svg aria-hidden="true"><use href="#i-check"/></svg>Grammar and spelling</h3><p>Every fix is marked in the text and listed with a one-line reason: spelling, grammar, punctuation or style.</p></div>
+        <div><h3><svg aria-hidden="true"><use href="#i-spark"/></svg>Three ways to say it</h3><p>Rephrase gives you a formal, a concise and a friendly version. Pick one and replace. You can rename the styles.</p></div>
+        <div><h3><svg aria-hidden="true"><use href="#i-globe"/></svg>English and Hebrew</h3><p>Hebrew stays Hebrew and the card switches to right-to-left. Mixed text keeps each part in its own language.</p></div>
+        <div><h3><svg aria-hidden="true"><use href="#i-bolt"/></svg>Instant fix</h3><p><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>G</kbd> fixes and replaces without a card. <kbd>Ctrl</kbd> <kbd>Z</kbd> undoes it.</p></div>
+        <div><h3><svg aria-hidden="true"><use href="#i-clip"/></svg>Your clipboard is kept</h3><p>Polish copies your selection to read it, then puts back whatever was on your clipboard.</p></div>
+        <div><h3><svg aria-hidden="true"><use href="#i-list"/></svg>Fast mode</h3><p>Switch to a smaller model from the tray menu when speed matters more than nuance.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Shortcuts</h2>
+        <p>Change any of them in Settings. On a Mac, Ctrl is Control and Alt is Option.</p>
+      </div>
+      <div class="table-scroll">
+        <table class="keys">
+          <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>G</kbd></td><td>Fix grammar and spelling, then review in the card</td></tr>
+          <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>G</kbd></td><td>Fix and replace right away</td></tr>
+          <tr><td><kbd>Ctrl</kbd> <kbd>Alt</kbd> <kbd>R</kbd></td><td>Rephrase: corrections plus three alternative versions</td></tr>
+          <tr><td><kbd>Alt</kbd> <kbd>Shift</kbd> <kbd>G</kbd> / <kbd>R</kbd></td><td>The same in Chrome, for the text box you're typing in</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Where your text goes</h2>
+        <p>Polish has no servers and no account. It talks to one place: Anthropic's API, using your own key.</p>
+      </div>
+      <div class="privacy">
+        <div class="warn"><h3>Text you check is sent to Anthropic</h3><p>Each check sends the selected text to Claude over an encrypted connection. Don't use Polish on patient-identifiable or other confidential information unless your organization allows it.</p></div>
+        <div><h3>Your key stays on your computer</h3><p>The API key is saved in your user folder (desktop app) or in your browser profile (extension). Polish never sends it anywhere except Anthropic.</p></div>
+        <div><h3>Open source</h3><p>Every line is on GitHub under the Apache 2.0 license, so you or your IT team can check exactly what it does.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="download">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Download</h2>
+        <p>You'll also need an Anthropic API key from <a href="https://console.anthropic.com/">console.anthropic.com</a>. Polish asks for it the first time it starts.</p>
+      </div>
+      <div class="dl">
+        <div id="dl-win">
+          <div class="os"><svg aria-hidden="true"><use href="#i-win"/></svg>Windows</div>
+          <ol><li>Run <b>Polish-Setup.exe</b>. No administrator rights needed.</li><li>Paste your API key in Settings.</li><li>Look for the P in the system tray.</li></ol>
+          <p class="note">Not code-signed yet. If SmartScreen appears, click <b>More info</b>, then <b>Run anyway</b>.</p>
+          <a class="btn primary" href="https://github.com/omrin/polish/releases/latest/download/Polish-Setup.exe"><svg aria-hidden="true"><use href="#i-win"/></svg>Polish-Setup.exe <small>Windows 10/11</small></a>
+        </div>
+        <div id="dl-mac">
+          <div class="os"><svg aria-hidden="true"><use href="#i-mac"/></svg>macOS</div>
+          <ol><li>Open <b>Polish-macOS.dmg</b> and drag Polish to Applications.</li><li>Right-click Polish and choose <b>Open</b> the first time.</li><li>Allow Accessibility and Input Monitoring when asked.</li></ol>
+          <p class="note">Apple Silicon. Needs macOS 12 or later.</p>
+          <a class="btn" href="https://github.com/omrin/polish/releases/latest/download/Polish-macOS.dmg"><svg aria-hidden="true"><use href="#i-mac"/></svg>Polish-macOS.dmg</a>
+        </div>
+        <div id="dl-chrome">
+          <div class="os"><svg aria-hidden="true"><use href="#i-chrome"/></svg>Chrome and Edge</div>
+          <ol><li>Unzip <b>Polish-Chrome-Extension.zip</b>.</li><li>Open <kbd>chrome://extensions</kbd> and turn on Developer mode.</li><li>Click <b>Load unpacked</b> and choose the folder.</li></ol>
+          <p class="note">Works in text boxes, email editors and chats. Not in Google Docs.</p>
+          <a class="btn" href="https://github.com/omrin/polish/releases/latest/download/Polish-Chrome-Extension.zip"><svg aria-hidden="true"><use href="#i-chrome"/></svg>Extension .zip</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="sec-head"><h2>Questions</h2><p>Short answers to what people ask first.</p></div>
+      <div class="faq">
+        <details><summary>Is Polish free?</summary><p>The app is free and open source. Checks use your own Anthropic API key, so you pay Anthropic for what you use. A typical paragraph costs a fraction of a cent, and fast mode costs less.</p></details>
+        <details><summary>Does it work offline?</summary><p>No. Claude does the checking in Anthropic's cloud, so you need an internet connection that can reach api.anthropic.com. If a firewall blocks it, Polish shows "Can't reach the Anthropic API".</p></details>
+        <details><summary>Which languages does it support?</summary><p>English and Hebrew are tested, including right-to-left layout. Other languages generally work too, since Claude keeps the language you wrote in.</p></details>
+        <details><summary>Does it work in Google Docs?</summary><p>The Chrome extension can't reach Google Docs, because Docs doesn't use normal text boxes. The desktop app works there: select the text and press the shortcut.</p></details>
+        <details><summary>Will it rewrite my text?</summary><p>Fix makes the smallest edits that correct real errors and leaves your style alone. Rephrase is for when you want a different wording, and you choose whether to use it.</p></details>
+        <details><summary>Why does Windows or macOS warn me when I install it?</summary><p>The installers aren't code-signed yet, which costs money each year. The full source is on GitHub, and you can build it yourself if you prefer.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap row">
+    <a class="brand" href="#top"><svg aria-hidden="true" style="width:24px;height:24px"><use href="#logo"/></svg>Polish</a>
+    <span class="tag">Make it shine.</span>
+    <span class="links"><a href="https://github.com/omrin/polish">GitHub</a><a href="https://github.com/omrin/polish/releases">Releases</a><a href="https://github.com/omrin/polish/blob/main/LICENSE">Apache 2.0</a></span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  // Each example is a list of tokens: plain strings, or [deleted, inserted] pairs.
+  const EX = {
+    en: {
+      dir: "ltr", to: "To: Ward 4 team", subj: "Subject: Weekly report",
+      tokens: ["Hi team, I ", ["has", "have"], " attached the report ", ["wich summarise", "which summarizes"], " last ", ["weeks", "week's"],
+               " results. Let me know if ", ["their", "there"], " are any ", ["question", "questions"], "."],
+      alts: [["Formal", "Dear team, please find attached the report summarizing last week's results. Let me know if you have any questions."],
+             ["Concise", "Attached: last week's results. Questions welcome."],
+             ["Friendly", "Hi all! I've attached last week's results. Shout if anything's unclear."]],
+      status: (n) => `${n} fixes`, statusAlt: "3 alternatives",
+    },
+    he: {
+      dir: "rtl", to: "אל: צוות מחלקה 4", subj: "נושא: דוח שבועי",
+      tokens: ["שלום צוות, מצורף הדוח ", ["שמסכמים", "שמסכם"], " את התוצאות של השבוע שעבר. אם יש ", ["שאלה", "שאלות"], ", תודיעו לי ", ["בבקשא", "בבקשה"], "."],
+      alts: [["רשמי", "צוות יקר, מצורף הדוח המסכם את תוצאות השבוע שעבר. אשמח לענות על כל שאלה."],
+             ["תמציתי", "מצורפות תוצאות השבוע שעבר. שאלות? אני כאן."],
+             ["ידידותי", "היי לכולם! צירפתי את התוצאות של השבוע שעבר. אם משהו לא ברור, תכתבו לי."]],
+      status: (n) => `${n} תיקונים`, statusAlt: "3 ניסוחים",
+    },
+  };
+  const $ = (id) => document.getElementById(id);
+  const esc = (s) => s.replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  let lang = "en", mode = "fix";
+
+  function render(animate) {
+    const ex = EX[lang];
+    $("demo-body").dir = ex.dir;
+    $("m-to").textContent = ex.to; $("m-subj").textContent = ex.subj;
+    const text = $("demo-text"), alts = $("demo-alts");
+    text.classList.toggle("anim", !!animate);
+    alts.classList.toggle("anim", !!animate);
+    let i = 0, fixes = 0;
+    text.innerHTML = ex.tokens.map((t) => {
+      if (typeof t === "string") return esc(t);
+      fixes++;
+      if (mode === "before") return esc(t[0]);
+      return `<del style="--i:${i++}">${esc(t[0])}</del><ins style="--i:${i++}">${esc(t[1])}</ins>`;
+    }).join("");
+    alts.hidden = mode !== "reph";
+    alts.innerHTML = ex.alts.map(([label, s], k) => `<div class="alt" style="--i:${k}"><b>${esc(label)}</b>${esc(s)}</div>`).join("");
+    $("demo-status").textContent = mode === "before" ? "" : mode === "fix" ? ex.status(fixes) : `${ex.status(fixes)} · ${ex.statusAlt}`;
+    for (const [id, m] of [["b-before", "before"], ["b-fix", "fix"], ["b-reph", "reph"]]) $(id).setAttribute("aria-pressed", String(mode === m));
+    $("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+    $("lang-he").setAttribute("aria-pressed", String(lang === "he"));
+  }
+  $("b-before").addEventListener("click", () => { mode = "before"; render(false); });
+  $("b-fix").addEventListener("click", () => { mode = "fix"; render(true); });
+  $("b-reph").addEventListener("click", () => { mode = "reph"; render(true); });
+  $("lang-en").addEventListener("click", () => { lang = "en"; render(true); });
+  $("lang-he").addEventListener("click", () => { lang = "he"; render(true); });
+  render(false);
+
+  // Point the main button at the visitor's platform.
+  const ua = navigator.userAgent;
+  const main = $("cta-main");
+  if (/Macintosh|Mac OS X/.test(ua) && !/Mobile/.test(ua)) {
+    main.innerHTML = '<svg aria-hidden="true"><use href="#i-mac"/></svg>Download for macOS';
+    $("cta-mac").hidden = true; $("cta-win").hidden = false;
+    $("dl-mac").classList.add("rec");
+  } else if (/CrOS|Linux/.test(ua) && !/Android/.test(ua)) {
+    main.innerHTML = '<svg aria-hidden="true"><use href="#i-chrome"/></svg>Add to Chrome';
+    $("cta-chrome").hidden = true; $("cta-win").hidden = false;
+    $("dl-chrome").classList.add("rec");
+  } else {
+    $("dl-win").classList.add("rec");
+  }
+})();
+</script>
