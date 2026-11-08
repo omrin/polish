@@ -1,0 +1,7 @@
+{
+  "corrected_text": "אני הולך לבית הספר מחר.",
+  "corrections": [
+    {"original": "הולכת", "replacement": "הולך", "type": "grammar", "explanation": "התאמה בין הנושא לפועל."}
+  ],
+  "rephrasings": []
+}

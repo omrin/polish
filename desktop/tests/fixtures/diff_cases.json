@@ -1,0 +1,96 @@
+[
+ {
+  "a": "I has a apple",
+  "b": "I have an apple",
+  "ops": [
+   [
+    "equal",
+    "I "
+   ],
+   [
+    "delete",
+    "has"
+   ],
+   [
+    "insert",
+    "have"
+   ],
+   [
+    "equal",
+    " "
+   ],
+   [
+    "delete",
+    "a"
+   ],
+   [
+    "insert",
+    "an"
+   ],
+   [
+    "equal",
+    " apple"
+   ]
+  ]
+ },
+ {
+  "a": "same text",
+  "b": "same text",
+  "ops": [
+   [
+    "equal",
+    "same text"
+   ]
+  ]
+ },
+ {
+  "a": "line one\nline too",
+  "b": "line one\nline two",
+  "ops": [
+   [
+    "equal",
+    "line one\nline "
+   ],
+   [
+    "delete",
+    "too"
+   ],
+   [
+    "insert",
+    "two"
+   ]
+  ]
+ },
+ {
+  "a": "אני הולכת לבית הספר",
+  "b": "אני הולך לבית הספר",
+  "ops": [
+   [
+    "equal",
+    "אני "
+   ],
+   [
+    "delete",
+    "הולכת"
+   ],
+   [
+    "insert",
+    "הולך"
+   ],
+   [
+    "equal",
+    " לבית הספר"
+   ]
+  ]
+ },
+ {
+  "a": "",
+  "b": "new",
+  "ops": [
+   [
+    "insert",
+    "new"
+   ]
+  ]
+ }
+]

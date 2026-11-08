@@ -1,0 +1,9 @@
+{
+  "corrected_text": "I have an apple and I want to eat it.",
+  "corrections": [
+    {"original": "I has", "replacement": "I have", "type": "grammar", "explanation": "Use 'have' with 'I'."},
+    {"original": "a apple", "replacement": "an apple", "type": "grammar", "explanation": "Use 'an' before a vowel sound."},
+    {"original": "wnat", "replacement": "want", "type": "spelling", "explanation": "Spelling."}
+  ],
+  "rephrasings": []
+}

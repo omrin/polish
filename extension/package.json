@@ -1,0 +1,14 @@
+{
+  "name": "writing-assistant-extension",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "sync": "python3 ../scripts/sync_shared.py",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "node --test --test-concurrency=1 tests/e2e/*.spec.js",
+    "test": "npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "playwright": "^1.50.0"
+  }
+}

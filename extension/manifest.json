@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Writing Assistant",
+  "version": "1.0.0",
+  "description": "Fix grammar & spelling and get alternative phrasings anywhere you type — powered by Claude.",
+  "icons": { "16": "icons/icon16.png", "48": "icons/icon48.png", "128": "icons/icon128.png" },
+  "action": { "default_title": "Writing Assistant", "default_icon": { "16": "icons/icon16.png", "48": "icons/icon48.png" } },
+  "permissions": ["storage", "contextMenus"],
+  "host_permissions": ["https://api.anthropic.com/*"],
+  "background": { "service_worker": "src/background.js" },
+  "content_scripts": [{
+    "matches": ["<all_urls>"],
+    "js": ["src/shared.js", "src/diff.js", "src/card.js", "src/content.js"],
+    "run_at": "document_idle",
+    "all_frames": true
+  }],
+  "options_page": "src/options.html",
+  "commands": {
+    "fix-grammar": { "suggested_key": { "default": "Alt+Shift+G" }, "description": "Fix grammar & spelling in the focused field" },
+    "rephrase": { "suggested_key": { "default": "Alt+Shift+R" }, "description": "Suggest different phrasings" }
+  }
+}

@@ -1,0 +1,13 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>WA test page</title></head>
+<body style="font-family:sans-serif;padding:20px">
+  <h3>Writing Assistant test page</h3>
+  <textarea id="ta" rows="4" cols="60">I has a apple and I wnat to eat it.</textarea><br><br>
+  <input id="inp" type="text" size="60" value="I has a apple and I wnat to eat it."><br><br>
+  <div id="ce" contenteditable="true" style="border:1px solid #999;padding:8px;width:420px">I has a apple and I wnat to eat it.</div><br>
+  <textarea id="he" dir="rtl" rows="3" cols="60">אני הולכת לבית הספר מחר.</textarea>
+  <script>
+    window.inputEvents = 0;
+    document.addEventListener("input", () => window.inputEvents++, true);
+  </script>
+</body></html>

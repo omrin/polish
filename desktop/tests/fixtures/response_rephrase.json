@@ -1,0 +1,11 @@
+{
+  "corrected_text": "I have an apple and I want to eat it.",
+  "corrections": [
+    {"original": "I has", "replacement": "I have", "type": "grammar", "explanation": "Use 'have' with 'I'."}
+  ],
+  "rephrasings": [
+    {"label": "Formal", "text": "I possess an apple, which I intend to eat."},
+    {"label": "Concise", "text": "I'll eat my apple."},
+    {"label": "Friendly", "text": "I've got an apple and I can't wait to eat it!"}
+  ]
+}

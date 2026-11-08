@@ -1,0 +1,15 @@
+[project]
+name = "writing-assistant"
+version = "1.0.0"
+description = "Grammarly-style writing assistant powered by Claude"
+requires-python = ">=3.10"
+dependencies = ["anthropic>=2.6", "pydantic>=2", "PySide6>=6.7", "pynput>=1.7", "pyperclip>=1.9"]
+
+[project.scripts]
+writing-assistant = "wa_desktop.app:main"
+
+[tool.setuptools]
+packages = ["wa_core", "wa_desktop", "wa_desktop.ui"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
