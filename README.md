@@ -55,7 +55,7 @@ The easiest way is the installer under **Download** above. To run from source in
 
 To build the installer yourself, run `desktop\build_windows_exe.bat`. It produces `desktop\dist\Polish-Setup.exe`
 if [NSIS](https://nsis.sourceforge.io) is installed. Releases are built automatically by GitHub Actions
-(`.github/workflows/release.yml`) when a version tag is pushed: `git tag v1.0.1 && git push origin v1.0.1`.
+(`.github/workflows/release.yml`): change the number in `VERSION` and push to `main`.
 
 ### macOS / Linux
 
