@@ -1,0 +1,42 @@
+name = "polish"
+main = "src/index.ts"
+compatibility_date = "2026-10-01"
+compatibility_flags = ["nodejs_compat"]
+
+# Static website (landing, sign-in, account, legal pages). API routes run in the Worker first.
+[assets]
+directory = "../website/public"
+binding = "ASSETS"
+run_worker_first = ["/v1/*", "/auth/*", "/webhooks/*", "/admin/*"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "polish-db"
+database_id = "00000000-0000-0000-0000-000000000000"  # replace with the id from `wrangler d1 create polish-db`
+migrations_dir = "migrations"
+
+[triggers]
+crons = ["*/5 * * * *"]
+
+[observability]
+enabled = true
+head_sampling_rate = 1
+
+[vars]
+DOMAIN = "polish.example.com"            # your real domain, without https://
+DEFAULT_MODEL = "claude-opus-5-5"
+FAST_MODEL = "claude-haiku-5-5"
+GOOGLE_CLIENT_ID = ""                    # empty = Google sign-in hidden
+PADDLE_ENV = "sandbox"                   # sandbox | production
+PADDLE_CLIENT_TOKEN = ""
+PADDLE_PRICE_SMALL = ""
+PADDLE_PRICE_PLUS = ""
+PADDLE_PRICE_PRO = ""
+EXTENSION_IDS = ""                       # comma-separated Chrome extension ids allowed to sign in
+ADMIN_EMAILS = ""                        # comma-separated
+RESEND_FROM = "Polish <sign-in@polish.example.com>"
+MAX_DAILY_RAW_COST_USD = "50"            # pause the service if Anthropic spend passes this per day
+
+# Secrets (set with `wrangler secret put NAME`, never committed):
+#   ANTHROPIC_API_KEY  SESSION_SECRET  CODE_PEPPER  RATE_SALT  RESEND_API_KEY
+#   GOOGLE_CLIENT_SECRET  PADDLE_WEBHOOK_SECRET

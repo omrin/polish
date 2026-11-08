@@ -7,3 +7,6 @@ desktop/dist/
 node_modules/
 test-results/
 *.zip
+server/.wrangler/
+server/.dev.vars
+.dev.vars

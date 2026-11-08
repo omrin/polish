@@ -1,0 +1,10 @@
+# Copy to server/.dev.vars for `npx wrangler dev` (never commit the real file).
+ANTHROPIC_API_KEY=sk-ant-...
+SESSION_SECRET=replace-with-openssl-rand-hex-32
+CODE_PEPPER=replace-with-random
+RATE_SALT=replace-with-random
+RESEND_API_KEY=re_...
+GOOGLE_CLIENT_SECRET=
+PADDLE_WEBHOOK_SECRET=
+DOMAIN=localhost:8787
+DEV_INSECURE_COOKIES=1
