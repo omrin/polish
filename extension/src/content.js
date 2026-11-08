@@ -40,11 +40,12 @@
       .w { position: fixed; z-index: 2147483646; display: flex; gap: 2px; align-items: center;
         background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,.25); padding: 2px; }
       button { all: unset; cursor: pointer; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center;
-        font: 700 12px/1 system-ui, Arial, sans-serif; color: #fff; background: #15c39a; }
-      button.r { background: #fff; color: #11a683; font-size: 13px; }
+        font: 700 12px/1 system-ui, Arial, sans-serif; color: #fff; background: linear-gradient(135deg, #5ee7c8 0%, #3b8beb 50%, #6a4ce0 100%); }
+      button.f img { width: 22px; height: 22px; border-radius: 50%; }
+      button.r { background: #fff; color: #3b8beb; font-size: 13px; }
       button:hover { filter: brightness(.92); }
     </style>
-    <div class="w"><button class="f" title="Fix grammar & spelling (Alt+Shift+G)" aria-label="Fix grammar and spelling">W</button><button class="r" title="Rephrase (Alt+Shift+R)" aria-label="Rephrase">✎</button></div>`;
+    <div class="w"><button class="f" title="Fix grammar & spelling (Alt+Shift+G)" aria-label="Fix grammar and spelling"><img src="${chrome.runtime.getURL("icons/icon48.png")}" alt=""></button><button class="r" title="Rephrase (Alt+Shift+R)" aria-label="Rephrase">✎</button></div>`;
   const btnWrap = btnRoot.querySelector(".w");
   btnRoot.querySelector(".f").addEventListener("click", () => run("fix"));
   btnRoot.querySelector(".r").addEventListener("click", () => run("rephrase"));

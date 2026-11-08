@@ -10,10 +10,10 @@ from . import shared_data
 def config_dir() -> Path:
     if sys.platform.startswith("win"):
         base = Path(os.environ.get("APPDATA", Path.home() / "AppData" / "Roaming"))
-        return base / "WritingAssistant"
+        return base / "Polish"
     if sys.platform == "darwin":
-        return Path.home() / "Library" / "Application Support" / "WritingAssistant"
-    return Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "writing-assistant"
+        return Path.home() / "Library" / "Application Support" / "Polish"
+    return Path(os.environ.get("XDG_CONFIG_HOME", Path.home() / ".config")) / "polish"
 
 
 def _default_hotkeys() -> dict:

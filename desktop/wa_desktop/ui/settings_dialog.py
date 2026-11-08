@@ -10,7 +10,7 @@ class SettingsDialog(QDialog):
     def __init__(self, cfg, parent=None):
         super().__init__(parent)
         self.cfg = cfg
-        self.setWindowTitle("Writing Assistant - Settings")
+        self.setWindowTitle("Polish - Settings")
         self.setMinimumWidth(480)
         form = QFormLayout(self)
 

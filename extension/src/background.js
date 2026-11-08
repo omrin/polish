@@ -43,7 +43,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
         const result = await analyze(msg.text, msg.mode, settings);
         sendResponse({ result });
       } catch (e) {
-        console.warn("[Writing Assistant]", e);
+        console.warn("[Polish]", e);
         sendResponse({ error: { code: e.code || "error", message: e.message } });
       }
     })();

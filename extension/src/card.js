@@ -7,7 +7,8 @@
       background: #fff; color: #263238; border: 1px solid #cfd8dc; border-radius: 12px;
       box-shadow: 0 10px 32px rgba(0,0,0,.18); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
     .hdr { display: flex; align-items: center; gap: 8px; padding: 10px 14px; border-bottom: 1px solid #eceff1; }
-    .hdr .t { font-weight: 700; color: #11a683; flex: 1; }
+    .hdr .t { font-weight: 700; flex: 1; display: flex; align-items: center; gap: 7px; background: linear-gradient(135deg, #5ee7c8 0%, #3b8beb 50%, #6a4ce0 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hdr .t img { width: 18px; height: 18px; }
     .hdr .m { color: #90a4ae; font-size: 12px; }
     .x { border: none; background: none; font-size: 18px; cursor: pointer; color: #78909c; padding: 0 4px; }
     .body { overflow: auto; padding: 10px 14px; }
@@ -21,19 +22,20 @@
     .tag.spelling { color: #c62828 } .tag.grammar { color: #1565c0 } .tag.punctuation { color: #6a1b9a } .tag.style { color: #ef6c00 }
     .why { color: #607d8b; font-size: 13px; }
     label.alt { display: block; border: 1px solid #e0e6e8; border-radius: 8px; padding: 8px 10px; margin: 6px 0; cursor: pointer; }
-    label.alt:has(input:checked) { border-color: #15c39a; background: #effcf8; }
+    label.alt:has(input:checked) { border-color: #3b8beb; background: #f0f6ff; }
     label.alt b { display: block; font-size: 12px; color: #37474f; }
     .ftr { display: flex; gap: 8px; justify-content: flex-end; padding: 10px 14px; border-top: 1px solid #eceff1; }
     button.b { padding: 6px 14px; border-radius: 6px; border: 1px solid #b0bec5; background: #f5f7f8; cursor: pointer; font: inherit; }
-    button.p { background: #15c39a; border-color: #15c39a; color: #fff; font-weight: 600; }
+    button.p { background: linear-gradient(135deg, #5ee7c8 0%, #3b8beb 50%, #6a4ce0 100%); border-color: transparent; color: #fff; font-weight: 600; }
     button.b:disabled { opacity: .5; cursor: default; }
     .err { color: #b71c1c; }
     .ok { color: #2e7d32; font-weight: 600; }
-    .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid #b2dfdb; border-top-color: #15c39a;
+    .spin { display: inline-block; width: 14px; height: 14px; border: 2px solid #cfe0fb; border-top-color: #3b8beb;
       border-radius: 50%; animation: r .8s linear infinite; vertical-align: -2px; margin-inline-end: 8px; }
     @keyframes r { to { transform: rotate(360deg) } }
   `;
 
+  const ICON = chrome.runtime.getURL("icons/icon32.png");
   const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
   class WACard {
@@ -41,7 +43,7 @@
       this.host = document.createElement("wa-card-host");
       this.host.setAttribute("data-wa", "card");
       this.root = this.host.attachShadow({ mode: "open" });
-      this.root.innerHTML = `<style>${CSS}</style><div class="card" role="dialog" aria-label="Writing Assistant"></div>`;
+      this.root.innerHTML = `<style>${CSS}</style><div class="card" role="dialog" aria-label="Polish"></div>`;
       this.el = this.root.querySelector(".card");
       this.onApply = null;
       this._onKey = (e) => { if (e.key === "Escape") this.close(); };
@@ -85,7 +87,7 @@
     _frame(title, meta, body, footer, dir) {
       this.el.setAttribute("dir", dir || "ltr");
       this.el.innerHTML = `
-        <div class="hdr" dir="ltr"><span class="t">${esc(title)}</span><span class="m">${esc(meta || "")}</span>
+        <div class="hdr" dir="ltr"><span class="t"><img src="${ICON}" alt="">${esc(title)}</span><span class="m">${esc(meta || "")}</span>
           <button class="x" title="Close" aria-label="Close">×</button></div>
         <div class="body">${body}</div>${footer ? `<div class="ftr" dir="ltr">${footer}</div>` : ""}`;
       this.el.querySelector(".x").addEventListener("click", () => this.close());
@@ -94,13 +96,13 @@
 
     showLoading(mode) {
       this._frame(mode === "rephrase" ? "Rephrase" : "Grammar & spelling", "",
-        `<div><span class="spin"></span>Checking…</div>`);
+        `<div><span class="spin"></span>Polishing…</div>`);
     }
 
     showError(message, code) {
       const footer = code === "no_api_key"
         ? `<button class="b p" data-act="options">Open Options</button>` : `<button class="b" data-act="close">Close</button>`;
-      this._frame("Writing Assistant", "", `<div class="err">${esc(message)}</div>`, footer);
+      this._frame("Polish", "", `<div class="err">${esc(message)}</div>`, footer);
       const opt = this.el.querySelector('[data-act="options"]');
       if (opt) opt.addEventListener("click", () => { chrome.runtime.sendMessage({ type: "WA_OPEN_OPTIONS" }); this.close(); });
       const cl = this.el.querySelector('[data-act="close"]');
@@ -108,7 +110,7 @@
     }
 
     showNotice(message) {
-      this._frame("Writing Assistant", "", `<div>${esc(message)}</div>`, `<button class="b" data-act="close">Close</button>`);
+      this._frame("Polish", "", `<div>${esc(message)}</div>`, `<button class="b" data-act="close">Close</button>`);
       this.el.querySelector('[data-act="close"]').addEventListener("click", () => this.close());
     }
 

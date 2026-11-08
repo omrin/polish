@@ -1,1 +1,1 @@
-"""Pure, GUI-free core of the Writing Assistant (prompting, API, parsing, diffing)."""
+"""Pure, GUI-free core of Polish (prompting, API, parsing, diffing)."""

@@ -19,27 +19,31 @@ from .ui.popup import SuggestionPopup
 from .ui.settings_dialog import SettingsDialog
 from .worker import AnalyzeWorker
 
-log = logging.getLogger("writing_assistant")
+log = logging.getLogger("polish")
 
 
 def make_icon() -> QIcon:
-    base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent))
-    png = base / "assets" / "icon.png"
-    if png.exists():
-        return QIcon(str(png))
+    base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent.parent)) / "assets"
+    if (base / "icon.png").exists():
+        icon = QIcon()
+        # Hand-tuned small sizes keep the P crisp in the system tray.
+        for name in ("icon_16.png", "icon_32.png", "icon.png"):
+            if (base / name).exists():
+                icon.addFile(str(base / name))
+        return icon
     pix = QPixmap(64, 64)
     pix.fill(Qt.transparent)
     p = QPainter(pix)
     p.setRenderHint(QPainter.Antialiasing)
-    p.setBrush(QColor("#15c39a")); p.setPen(Qt.NoPen)
+    p.setBrush(QColor("#3b8beb")); p.setPen(Qt.NoPen)
     p.drawEllipse(2, 2, 60, 60)
     p.setPen(QColor("white")); p.setFont(QFont("Arial", 30, QFont.Bold))
-    p.drawText(pix.rect(), Qt.AlignCenter, "W")
+    p.drawText(pix.rect(), Qt.AlignCenter, "P")
     p.end()
     return QIcon(pix)
 
 
-class WritingAssistantApp:
+class PolishApp:
     def __init__(self, qapp: QApplication):
         self.qapp = qapp
         self.cfg = config_mod.load()
@@ -55,7 +59,7 @@ class WritingAssistantApp:
         self.from_clipboard = False
 
         self.tray = QSystemTrayIcon(make_icon())
-        self.tray.setToolTip("Writing Assistant")
+        self.tray.setToolTip("Polish - Make it shine.")
         self.tray.setContextMenu(self._build_menu())
         self.tray.show()
 
@@ -161,7 +165,7 @@ class WritingAssistantApp:
 
     def toast(self, msg: str, error: bool = False):
         icon = QSystemTrayIcon.Warning if error else QSystemTrayIcon.Information
-        self.tray.showMessage("Writing Assistant", msg, icon, 4000)
+        self.tray.showMessage("Polish", msg, icon, 4000)
         (log.warning if error else log.info)(msg)
 
     def quit(self):
@@ -173,8 +177,9 @@ def main() -> int:
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
     qapp = QApplication(sys.argv)
     qapp.setQuitOnLastWindowClosed(False)
-    qapp.setApplicationName("Writing Assistant")
+    qapp.setApplicationName("Polish")
+    qapp.setWindowIcon(make_icon())
     if not QSystemTrayIcon.isSystemTrayAvailable():
         log.error("No system tray available on this desktop.")
-    app = WritingAssistantApp(qapp)  # noqa: F841 (keep reference alive)
+    app = PolishApp(qapp)  # noqa: F841 (keep reference alive)
     return qapp.exec()

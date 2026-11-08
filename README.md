@@ -1,6 +1,9 @@
-# Writing Assistant
+<p align="center"><img src="shared/brand/icon-512.png" width="112" alt="Polish icon"></p>
 
-A Grammarly-style writing assistant powered by Claude. At the push of a button it:
+<h1 align="center">Polish</h1>
+<p align="center"><i>Make it shine.</i></p>
+
+Polish is a Grammarly-style writing assistant powered by Claude. At the push of a button it:
 
 - **fixes grammar, spelling and punctuation**, showing each change with a short explanation, and
 - **suggests other phrasings**: Formal, Concise and Friendly by default; you can change these.
@@ -10,7 +13,7 @@ It runs in two places, and both use the same prompt and the same response format
 | | Where it works | How to trigger it |
 |---|---|---|
 | **Desktop app** (`desktop/`) | Any application: Word, Outlook, Teams, Notepad, browsers, EMR forms… | Select text, then press a global hotkey |
-| **Chrome extension** (`extension/`) | Any text box, input or rich-text editor on any website (Gmail, web forms, chats…) | Click the floating **W** button, use a keyboard shortcut, or right-click |
+| **Chrome extension** (`extension/`) | Any text box, input or rich-text editor on any website (Gmail, web forms, chats…) | Click the floating **P** button, use a keyboard shortcut, or right-click |
 
 It handles English and Hebrew. Hebrew text stays in Hebrew, and the UI switches to right-to-left on its own.
 
@@ -21,7 +24,7 @@ It handles English and Hebrew. Hebrew text stays in Hebrew, and the UI switches 
 **Any text you check is sent to Anthropic's API (Claude) over HTTPS.** Don't use this on
 patient-identifiable or other confidential information unless your organization's policy allows it
 (for example, under an agreement with Anthropic). The API key is stored in plain text on your machine:
-in `%APPDATA%\WritingAssistant\config.json` for the desktop app, and in the browser profile for the extension.
+in `%APPDATA%\Polish\config.json` for the desktop app, and in the browser profile for the extension.
 
 ---
 
@@ -35,10 +38,10 @@ Create a key at <https://console.anthropic.com/> under **API Keys**. Both apps a
 
 1. Install Python 3.10+ from <https://www.python.org/downloads/>. During setup, tick **"Add python.exe to PATH"**.
 2. Double-click **`desktop\run_windows.bat`**. The first run installs dependencies, which takes about a minute.
-3. A green **W** icon appears in the system tray, and the Settings window opens. Paste your API key there.
+3. The blue **P** icon appears in the system tray, and the Settings window opens. Paste your API key there.
 
-To get a single **`WritingAssistant.exe`** you can share or copy to other PCs without Python, run
-`desktop\build_windows_exe.bat`. The output is `desktop\dist\WritingAssistant.exe`.
+To get a single **`Polish.exe`** you can share or copy to other PCs without Python, run
+`desktop\build_windows_exe.bat`. The output is `desktop\dist\Polish.exe`.
 To start it with Windows, put a shortcut to it in `shell:startup`.
 
 ### macOS / Linux
@@ -70,8 +73,8 @@ and pastes the version you choose with **Ctrl+V**. Your clipboard is put back th
 
 1. Open `chrome://extensions`, turn on **Developer mode**, click **Load unpacked**, and choose the `extension/` folder.
 2. The Options page opens. Paste your API key, click **Save**, then **Test key**.
-3. Click into any text box. A small **W ✎** button appears in its corner:
-   - **W**: fix grammar & spelling. **✎**: rephrase.
+3. Click into any text box. A small **P ✎** button appears in its corner:
+   - **P**: fix grammar & spelling. **✎**: rephrase.
    - Keyboard: **Alt+Shift+G** fixes, **Alt+Shift+R** rephrases. You can change these at `chrome://extensions/shortcuts`.
    - Right-click in a text box: **Fix grammar & spelling** / **Rephrase…**
 4. If you select part of the text, only that part is checked. Otherwise the whole field is.
@@ -97,6 +100,7 @@ and you can turn it off in Settings/Options.
 ## 5. Project layout
 
 ```
+shared/brand/             logo: icon.svg (master), icon-small.svg (tuned for 16–32 px), icon-512.png
 shared/prompt.json        single source of truth: system prompt, JSON schema, limits, defaults
 scripts/sync_shared.py    regenerates extension/src/shared.js from shared/prompt.json
 desktop/wa_core/          pure logic: prompt, Claude API call, response validation, word diff, config

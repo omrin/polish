@@ -1,9 +1,15 @@
+import sys
+from pathlib import Path
+
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtGui import QCursor, QGuiApplication, QKeySequence, QShortcut
 from PySide6.QtWidgets import (QButtonGroup, QFrame, QHBoxLayout, QLabel, QPushButton,
                                QRadioButton, QScrollArea, QTextBrowser, QVBoxLayout, QWidget)
 
 from .diff_render import diff_html
+
+POPUP_WIDTH = 480
+ICON = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parents[2])) / "assets" / "icon_32.png"
 
 TYPE_COLORS = {"spelling": "#c62828", "grammar": "#1565c0", "punctuation": "#6a1b9a", "style": "#ef6c00"}
 
@@ -20,17 +26,16 @@ class SuggestionPopup(QWidget):
             #popup { background:#ffffff; border:1px solid #cfd8dc; border-radius:10px; }
             QLabel#h { font-weight:600; color:#37474f; margin-top:6px; }
             QPushButton { padding:6px 14px; border-radius:6px; border:1px solid #b0bec5; background:#f5f7f8; }
-            QPushButton#primary { background:#15c39a; color:white; border:none; font-weight:600; }
+            QPushButton#primary { background:qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #4fd3c0, stop:0.5 #3b8beb, stop:1 #6a4ce0); color:white; border:none; font-weight:600; }
             QRadioButton { padding:4px; }
         """)
-        self.setMinimumWidth(460)
-        self.setMaximumWidth(620)
+        self.setFixedWidth(POPUP_WIDTH)
         self._candidates: list[str] = []
         self._align = Qt.AlignLeft
         outer = QVBoxLayout(self)
         outer.setContentsMargins(14, 12, 14, 12)
         self.title = QLabel()
-        self.title.setStyleSheet("font-size:14px;font-weight:700;color:#15c39a;")
+        self.title.setStyleSheet("font-size:14px;font-weight:700;color:#3b8beb;")
         outer.addWidget(self.title)
 
         scroll = self.scroll = QScrollArea()
@@ -81,7 +86,9 @@ class SuggestionPopup(QWidget):
         self._clear()
         rtl = direction == "rtl"
         self.setLayoutDirection(Qt.RightToLeft if rtl else Qt.LeftToRight)
-        self.title.setText(("Rephrase" if mode == "rephrase" else "Grammar & spelling") + f"  ·  {model}")
+        heading = "Rephrase" if mode == "rephrase" else "Grammar & spelling"
+        icon = f'<img src="{ICON.as_posix()}" width="18" height="18" style="vertical-align:middle">&nbsp; ' if ICON.exists() else ""
+        self.title.setText(f'{icon}{heading} <span style="color:#90a4ae;font-weight:400">&nbsp;·&nbsp; {model}</span>')
         align = self._align = Qt.AlignRight if rtl else Qt.AlignLeft
 
         # Option 0: corrected text (shown as diff)
@@ -136,8 +143,12 @@ class SuggestionPopup(QWidget):
         self.replace_btn.setEnabled(result.has_changes or bool(result.rephrasings))
         self.body.addStretch(1)
         body = self._pending_body
+        # Apply stylesheets (fonts, padding) before measuring, or the estimate comes out short.
+        body.ensurePolished()
+        for w in body.findChildren(QWidget):
+            w.ensurePolished()
         lay = body.layout()
-        width = max(self.width(), self.minimumWidth()) - 28
+        width = POPUP_WIDTH - 28  # minus the outer layout margins
         h = lay.totalHeightForWidth(width) if lay.hasHeightForWidth() else body.sizeHint().height()
         self.scroll.setFixedHeight(min(h + 12, 520))
         self.scroll.setWidget(body)
@@ -145,8 +156,21 @@ class SuggestionPopup(QWidget):
         self.resize(self.width(), self.minimumSizeHint().height())
         self._place()
         self.show()
+        self._fit_height()  # re-measure now that the real layout is known
         self.raise_()
         self.activateWindow()
+
+    def _fit_height(self):
+        body = self.scroll.widget()
+        if body is None:
+            return
+        body.layout().activate()
+        h = min(body.sizeHint().height() + 12, 520)
+        if h != self.scroll.height():
+            self.scroll.setFixedHeight(h)
+            self.adjustSize()
+            self.resize(self.width(), self.minimumSizeHint().height())
+            self._place()
 
     def selected_text(self) -> str:
         idx = self.group.checkedId()
