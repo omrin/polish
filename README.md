@@ -129,3 +129,7 @@ rephrase via the command path, Hebrew RTL, a missing key, a bad key, and Escape.
 - Clipboard restore keeps text only. If an image was on the clipboard, it's lost after a check.
 - Selections are limited to 8,000 characters by default. You can change this in Settings.
 - The extension doesn't run on `chrome://` pages, the Chrome Web Store, or Google Docs.
+
+## License
+
+Apache License 2.0. See [LICENSE](LICENSE).
