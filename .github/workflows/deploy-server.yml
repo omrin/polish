@@ -1,0 +1,87 @@
+# Tests the Polish service on every push. Deploys it to Cloudflare once you switch deployment on.
+#
+# One-time setup (see docs/OPERATOR.md):
+#   Repo Settings -> Secrets and variables -> Actions
+#     Variables: CLOUDFLARE_DEPLOY = true, D1_DATABASE_ID = <id from Cloudflare>
+#     Secrets:   CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, and the service secrets listed below.
+name: Polish service
+
+on:
+  push:
+    branches: [main]
+    paths: ["server/**", "website/**", "shared/prompt.json", ".github/workflows/deploy-server.yml"]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-server
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        working-directory: server
+        run: npm ci --legacy-peer-deps
+      - name: Test
+        working-directory: server
+        run: npm test
+
+  deploy:
+    needs: test
+    if: vars.CLOUDFLARE_DEPLOY == 'true'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install
+        working-directory: server
+        run: npm ci --legacy-peer-deps
+      - name: Build website
+        run: python3 website/build.py
+      - name: Point wrangler.toml at the production database
+        working-directory: server
+        env:
+          D1_DATABASE_ID: ${{ vars.D1_DATABASE_ID }}
+        run: |
+          test -n "$D1_DATABASE_ID" || { echo "Set the D1_DATABASE_ID repository variable"; exit 1; }
+          sed -i "s/00000000-0000-0000-0000-000000000000/$D1_DATABASE_ID/" wrangler.toml
+      - name: Apply database migrations
+        working-directory: server
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler d1 migrations apply polish-db --remote
+      - name: Deploy
+        working-directory: server
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx wrangler deploy
+      - name: Sync service secrets
+        working-directory: server
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
+          CODE_PEPPER: ${{ secrets.CODE_PEPPER }}
+          RATE_SALT: ${{ secrets.RATE_SALT }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          PADDLE_WEBHOOK_SECRET: ${{ secrets.PADDLE_WEBHOOK_SECRET }}
+        run: |
+          python3 - > /tmp/secrets.json <<'PY'
+          import json, os
+          names = ["ANTHROPIC_API_KEY", "SESSION_SECRET", "CODE_PEPPER", "RATE_SALT", "RESEND_API_KEY", "GOOGLE_CLIENT_SECRET", "PADDLE_WEBHOOK_SECRET"]
+          print(json.dumps({n: os.environ[n] for n in names if os.environ.get(n)}))
+          PY
+          npx wrangler secret bulk /tmp/secrets.json
+          rm -f /tmp/secrets.json

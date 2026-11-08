@@ -39,8 +39,11 @@ jobs:
       - run: python -m pytest -q desktop
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
       - run: node --test extension/tests/unit/*.test.js
+      - name: Service tests
+        working-directory: server
+        run: npm ci --legacy-peer-deps && npm test
 
   windows:
     needs: test
@@ -128,7 +131,7 @@ jobs:
             | **Polish-macOS.dmg** | macOS 12+. Works in every app. |
             | **Polish-Chrome-Extension.zip** | Chrome / Edge. Unzip, then open `chrome://extensions`, turn on Developer mode, and click **Load unpacked**. |
 
-            You need an Anthropic API key (https://console.anthropic.com). Text you check is sent to Anthropic's API.
+            Sign in when Polish starts: new accounts get 75 free credits, and you can buy more on the website. (Advanced: you can use your own Anthropic API key instead.) Text you check passes through the Polish service to Anthropic's Claude and isn't stored.
 
             The apps aren't code-signed yet. On Windows, if SmartScreen appears, click **More info → Run anyway**. On macOS, right-click Polish.app and choose **Open** the first time.
           files: |

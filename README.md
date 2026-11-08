@@ -18,6 +18,13 @@ It runs in two places, and both use the same prompt and the same response format
 
 It handles English and Hebrew. Hebrew text stays in Hebrew, and the UI switches to right-to-left on its own.
 
+There are two ways to use it:
+
+- **A Polish account (default):** sign in with an email code or Google. New accounts get 75 free credits, and you buy more on the website, from $5. No API key needed.
+- **Your own Anthropic API key (advanced):** Polish talks to Anthropic directly, and no account or credits are involved.
+
+Running the paid service yourself (server, payments, sign-in) is covered in **[docs/OPERATOR.md](docs/OPERATOR.md)**.
+
 ## Download
 
 | | |
@@ -32,16 +39,20 @@ All versions: [Releases](https://github.com/omrin/polish/releases). The apps are
 
 ## ⚠️ Privacy first
 
-**Any text you check is sent to Anthropic's API (Claude) over HTTPS.** Don't use this on
-patient-identifiable or other confidential information unless your organization's policy allows it
-(for example, under an agreement with Anthropic). The API key is stored in plain text on your machine:
-in `%APPDATA%\Polish\config.json` for the desktop app, and in the browser profile for the extension.
+**Any text you check is sent to Claude (Anthropic) over HTTPS.** With a Polish account it passes through the
+Polish service, which doesn't store it. Don't use this on patient-identifiable or other confidential information
+unless your organization's policy allows it. With an account, the desktop app keeps its sign-in in the OS keychain.
+In own-key mode, the API key is stored in plain text on your machine: in `%APPDATA%\Polish\config.json` for the
+desktop app, and in the browser profile for the extension.
 
 ---
 
-## 1. Get an API key
+## 1. Sign in (or get an API key)
 
-Create a key at <https://console.anthropic.com/> under **API Keys**. Both apps ask for it on first run.
+When Polish starts, click **Sign in** and approve in your browser. That's all.
+
+For own-key mode instead, create a key at <https://console.anthropic.com/> under **API Keys**. Then choose
+**My own Anthropic API key** in Settings (desktop) or Options (extension).
 
 ## 2. Desktop app (works anywhere)
 
@@ -114,6 +125,9 @@ and you can turn it off in Settings/Options.
 
 ```
 shared/brand/             logo: icon.svg (master), icon-small.svg (tuned for 16–32 px), icon-512.png
+server/                   Polish service: Cloudflare Worker + D1 (sign-in, credits, Paddle, Claude proxy)
+website/                  landing page (page.html) and the pages the Worker serves (public/)
+docs/OPERATOR.md          how to run the paid service: accounts, keys, deploy, smoke test
 shared/prompt.json        single source of truth: system prompt, JSON schema, limits, defaults
 scripts/sync_shared.py    regenerates extension/src/shared.js from shared/prompt.json
 desktop/wa_core/          pure logic: prompt, Claude API call, response validation, word diff, config
@@ -126,8 +140,10 @@ After you edit `shared/prompt.json`, run `python scripts/sync_shared.py`. A test
 ## 6. Tests
 
 ```bash
-cd desktop && pip install -r requirements.txt -r requirements-dev.txt && python -m pytest   # 59 tests
-cd extension && npm install && npx playwright install chromium && npm test                 # 11 unit + 8 end-to-end
+cd desktop && pip install -r requirements.txt -r requirements-dev.txt && python -m pytest   # 110 tests
+cd extension && npm install && npx playwright install chromium && npm test                 # 20 unit + 13 end-to-end
+cd server && npm ci --legacy-peer-deps && npm test                                         # 55 service tests (workerd + local D1)
+NODE_PATH=extension/node_modules node --test website/tests/website.spec.js                 # 5 website tests (wrangler dev)
 ```
 
 The end-to-end tests load the real extension in headless Chromium and run it against a local mock of the Claude API,
