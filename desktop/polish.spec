@@ -15,7 +15,9 @@ a = Analysis(
            ("assets/icon.png", "assets"), ("assets/icon_32.png", "assets"), ("assets/icon_16.png", "assets")],
     hiddenimports=["pynput.keyboard._win32", "pynput.mouse._win32",
                    "pynput.keyboard._darwin", "pynput.mouse._darwin",
-                   "pynput.keyboard._xorg", "pynput.mouse._xorg"],
+                   "pynput.keyboard._xorg", "pynput.mouse._xorg",
+                   # keyring picks its backend at runtime, so PyInstaller can't see these imports.
+                   "keyring.backends.Windows", "keyring.backends.macOS", "keyring.backends.SecretService"],
     # Qt modules Polish never uses; keeps the download smaller.
     excludes=["PySide6.QtWebEngineCore", "PySide6.QtWebEngineWidgets", "PySide6.QtQml", "PySide6.QtQuick",
               "PySide6.Qt3DCore", "PySide6.QtMultimedia", "PySide6.QtCharts", "PySide6.QtDataVisualization",

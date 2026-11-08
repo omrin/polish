@@ -47,3 +47,55 @@ class ApiRefused(WAError):
 class BadResponse(WAError):
     code = "bad_response"
     default_message = "Unexpected response - try again or shorten the text."
+
+
+# ---- Polish account (server) errors ----------------------------------------
+
+class SignedOut(WAError):
+    code = "signed_out"
+    default_message = "Sign in to Polish to continue."
+
+
+class NoCredits(WAError):
+    code = "no_credits"
+    default_message = "You're out of credits."
+
+    def __init__(self, message: str | None = None, buy_url: str = "", balance: int | None = None):
+        super().__init__(message)
+        self.buy_url = buy_url
+        self.balance = balance
+
+
+class ServerUnreachable(WAError):
+    code = "server_unreachable"
+    default_message = "Can't reach the Polish service. Check your connection."
+
+
+class AccountDisabled(WAError):
+    code = "account_disabled"
+    default_message = "This account is disabled. Contact support."
+
+
+class ServicePaused(WAError):
+    code = "service_paused"
+    default_message = "Polish is paused for maintenance. Try again later."
+
+
+class UpstreamError(WAError):
+    code = "upstream_error"
+    default_message = "The AI service didn't respond. Try again."
+
+
+class SignInExpired(WAError):
+    code = "expired"
+    default_message = "This sign-in request has expired. Try again."
+
+
+class SignInDenied(WAError):
+    code = "denied"
+    default_message = "Sign-in was declined in the browser."
+
+
+class InvalidCode(WAError):
+    code = "invalid_code"
+    default_message = "That code isn't right. Check the email or ask for a new code."

@@ -29,3 +29,8 @@ def schema() -> dict:
 
 def limits() -> dict:
     return load()["limits"]
+
+
+def service() -> dict:
+    """Polish service URLs (base_url, account_url, buy_url)."""
+    return load()["service"]

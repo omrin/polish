@@ -3,7 +3,7 @@ name = "polish"
 version = "1.0.0"
 description = "Polish - Make it shine. A Claude-powered grammar fixer and rephraser."
 requires-python = ">=3.10"
-dependencies = ["anthropic>=2.6", "pydantic>=2", "PySide6>=6.7", "pynput>=1.7", "pyperclip>=1.9"]
+dependencies = ["anthropic>=2.6", "pydantic>=2", "PySide6>=6.7", "pynput>=1.7", "pyperclip>=1.9", "keyring>=25"]
 
 [project.scripts]
 polish = "wa_desktop.app:main"
